@@ -8,7 +8,9 @@
             <th>Rating</th>
             <th>Stok</th>
             <th>Berat</th>
+            <th>Foto</th>
             <th>Aksi</th>
+            
         </thead>
         <tbody>
             
@@ -22,6 +24,8 @@
                 <td>{{$index['product_rate']}}</td>
                 <td>{{$index['stock']}}</td>
                 <td>{{$index['weight']}}</td>
+            
+                <td><img src="{{asset('images/'.$index['image_name']) }}" height="50" width="50" alt="img"></td>
                 <td><form action="/admin/product/{{$index->id}}/edit" method="GET">
                 	@csrf
                 	<button>Edit</button>
