@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-  <title>Laravel Multiple File Upload Example</title>
+  <title></title>
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -28,7 +28,7 @@
 <form method="post" action="/admin/product" enctype="multipart/form-data">
 
 
-	@csrf
+  @csrf
 	Nama :<input type="text" name="nama_produk" required=""><br>
 	Harga : <input type="number" name="harga" required=""><br>
 	
@@ -58,11 +58,11 @@
     Deskripsi : <br><textarea type="text" name="deskripsi" rows="5``" required=""></textarea><br>
     
     Diskon: 
-    <input type="checkbox" id="myCheck"  onclick="myFunction()">
-
+    <input type="checkbox" id="myCheck" name="dis"value="1" onclick="myFunction()">
+    
     <input id="text" type="text" name="persentase" style="display:none" placeholder="Persentase diskon"><br>
-    <input id="text1" type="date" name="tanggal_mulai" style="display:none" placeholder="tanggal mulai"><br>
-    <input id="text2" type="date" name="tanggal_akhir" style="display:none" placeholder="tanggal akhir"><br>
+    <input id="text1" type="date" name="tanggal_mulai" style="display:none" placeholder="tanggal mulai" ><br>
+    <input id="text2" type="date" name="tanggal_akhir" style="display:none" placeholder="tanggal akhir" ><br>
 
         <button type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>
 
@@ -95,6 +95,7 @@
       if (checkBox.checked == true){
         text.style.display = "block";
         text1.style.display = "block";
+        
         text2.style.display = "block";
       } else {
         text.style.display = "none";

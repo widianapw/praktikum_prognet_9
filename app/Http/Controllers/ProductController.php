@@ -7,6 +7,7 @@ use App\Product;
 use App\Product_img;
 use App\Product_cat;
 use App\Product_cat_det;
+use App\Discount;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -26,6 +27,7 @@ class ProductController extends Controller
         ->join('product_category_details','products.id','=','product_category_details.product_id')
         ->join('product_images','products.id','=','product_images.product_id')
         ->join('product_categories','product_category_details.category_id','=','product_categories.id')
+        ->groupBy('products.id')
         ->get();
         return view("/admin/product/index",compact("index"));
     }
@@ -58,6 +60,15 @@ class ProductController extends Controller
         $product->weight= $request->berat;
         $product->save();
         
+        if($request->dis = "1"){
+            $dis = new Discount;
+            $dis->id_product = $product->id;
+            $dis->percentage = $request->persentase;
+            $dis->start = $request->tanggal_mulai;
+            $dis->end=$request->tanggal_akhir;
+            $dis->save();
+        }
+
         if(is_array($request->kategori)){
             foreach($request->kategori as $kat){
                 $cat = new Product_cat_det;
@@ -107,7 +118,14 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $test = Product::find($product)->first();
-        return view("/admin/product/edit",compact("test"));
+        $cat = Product_cat_det::select('category_id')->where('product_id',$product->id)->get();
+
+        $category = Product_cat::get();
+        $img = Product_img::select('image_name')->where('product_id','=',$product->id)->get();
+        
+
+        return view("/admin/product/edit",compact("test","cat","img","category"));
+
     }
 
     /**
@@ -137,6 +155,6 @@ class ProductController extends Controller
      */
     public function destroy(product $product)
     {
-        //
+           
     }
 }

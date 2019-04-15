@@ -90,6 +90,8 @@ class CourierController extends Controller
      */
     public function destroy(courier $courier)
     {
-        //
+        Courier::where('id','=',$courier->id)->delete();
+        $index = Courier::get();
+        return redirect('/admin/courier/');        
     }
 }

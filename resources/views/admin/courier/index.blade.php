@@ -27,9 +27,17 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$index['courier']}}</td>
-                        <td style="text-align: center;"><form action="/admin/courier/{{$index->id}}/edit" method="GET">
-                            @csrf
-                            <button class="btn btn-warning">Edit</button>
+                        <td style="text-align: center;">
+                            <a href="/admin/courier/{{$index->id}}/edit">
+                                <button class="btn btn-warning">Edit</button>
+                            </a>
+                            
+                            <form action="/admin/courier/{{$index->id}}/" method="POST">
+                                @method("DELETE")
+                                @csrf
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
                             </form>
 
                         </td> 
