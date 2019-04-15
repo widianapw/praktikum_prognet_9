@@ -102,6 +102,8 @@ class ProductCatController extends Controller
      */
     public function destroy(Product_cat $product_cat)
     {
-        //
+        Product_cat::where('id','=',$courier->id)->delete();
+        $index = Product_cat::get();
+        return redirect('/admin/product_cat/');  
     }
 }

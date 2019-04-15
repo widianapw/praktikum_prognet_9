@@ -32,6 +32,14 @@
                             <button class="btn btn-warning">Edit</button>
                             </form>
 
+                            <form action="/admin/product_cat/{{$index->id}}/" method="POST">
+                                @method("DELETE")
+                                @csrf
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+
                         </td> 
                     </tr>
                    @endforeach
