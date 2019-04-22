@@ -11,7 +11,24 @@
                 <div class="widget-content nopadding">
                     <form class="form-horizontal" method="post" action="/admin/product_cat">
                     @csrf
+                        
+                        <div class="form-group">
+                            <label for="sel1">Select Tipe:</label>
+                            <select class="form-control" name="parent_id" onclick="myFunction()" >
+                                <option value="0">Parent Category</option>
+                                <option id="id1">Child Category</option>
+                          </select>
+                        </div>
+                        <div id="show" class="form-group" style="display: none">
+                            <label for="sel1">Select parent:</label>
+                            <select class="form-control" name="parent_id">
+                                @foreach($index as $index)
+                                    <option value="{{$index->id}}">{{$index->category_name}}</option>
+                                @endforeach
+                          </select>
+                        </div>
                         <div class="control-group{{$errors->has('nama_kategori')?' has-error':''}}">
+                        
                             <label class="control-label">Category Name :</label>
                             <div class="controls">
                                 <input id="name" type="text" class="form-control{{ $errors->has('nama_kategori') ? ' is-invalid' : '' }}" name="nama_kategori" value="{{ old('nama_kategori') }}" required="" autofocus>
@@ -37,6 +54,7 @@
         </div>
         </div>
     </div>
+    
 @endsection
 @section('jsblock')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -50,4 +68,15 @@
     <script src="{{ asset('js/matrix.form_validation.js') }}"></script>
     <script src="{{ asset('js/matrix.tables.js') }}"></script>
     <script src="{{ asset('js/matrix.popover.js') }}"></script>
+    <script type="text/javascript">
+        function myFunction() {
+        var select = document.getElementById("id1");
+        if (select.selected == true){
+            show.style.display = "block";
+          } else {
+            show.style.display = "none";
+            
+          }
+        }
+    </script>
 @endsection

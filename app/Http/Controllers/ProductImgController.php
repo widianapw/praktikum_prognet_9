@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product_img;
+use Image;
 use Illuminate\Http\Request;
 
 class ProductImgController extends Controller
@@ -47,28 +48,27 @@ class ProductImgController extends Controller
 
     ]);
     
-    
-
     if($request->hasfile('filename'))
      {
-
         foreach($request->file('filename') as $image)
         {
             $name=$image->getClientOriginalName();
-            $image->move(public_path().'/images/', $name);  
+            $large_image_path=public_path('images/large/'.$filename);
+            $medium_image_path=public_path('images/medium/'.$filename);
+            $small_image_path=public_path('images/small/'.$filename);
+                    //// Resize Images
+            Image::make($image)->save($large_image_path);
+            Image::make($image)->resize(600,600)->save($medium_image_path);
+            Image::make($image)->resize(300,300)->save($small_image_path);
+            // $image->move($large_image_path);  
             $form= new Product_img();   
             $form->product_id = "1";
             $form->image_name=json_encode($name);  
-            $form->save();
-            
+            $form->save()
+            // $inputData['image']=$filename;
+            // ImageGallery_model::create($inputData);
         }
      }
-
-     
-            
-     
-    
-    
 
     return back()->with('success', 'Your images has been successfully');
     }

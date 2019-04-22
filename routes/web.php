@@ -11,13 +11,25 @@
 |s
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Auth::routes();
+Route::get('/list-products','IndexController@shop');
+Route::get('/cat/{id}','IndexController@listByCat')->name('cats');
+Route::get('/product-detail/{id}','IndexController@detialpro');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/addToCart','CartController@addToCart')->name('addToCart');
+Route::get('/viewcart','CartController@index');
+Route::get('/cart/deleteItem/{id}','CartController@deleteItem');
+Route::get('/cart/update-quantity/{id}/{quantity}','CartController@updateQuantity');
+
+Auth::routes(['verify' => true]);
+
+
+Route::get('/', 'IndexController@index')->name('home')->middleware('verified');
+// Route::get('/home', 'HomeController@index');
+
 
 Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
     Route::get('/login','AuthAdmin\LoginController@showLoginForm')->name('admin.login');
@@ -26,9 +38,20 @@ Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
     Route::resource('/product_cat','ProductCatController');
     Route::resource('/product','ProductController');
     Route::resource('/courier','CourierController');
-    Route::resource('/product_img','ProductImgController');
+    // Route::resource('/product_img','ProductImgController');
 });
 
+// Route::get('/myaccount','UsersController@account');
+// Route::put('/update-profile/{id}','UsersController@updateprofile');
+// Route::put('/update-password/{id}','UsersController@updatepassword');
+
+// Route::get('/check-out','CheckOutController@index');
+// Route::post('/submit-checkout','CheckOutController@submitcheckout');
+
+// Route::get('/order-review','OrdersController@index');
+// Route::post('/submit-order','OrdersController@order');
+// Route::get('/cod','OrdersController@cod');
+// Route::get('/paypal','OrdersController@paypal');
 
 
 

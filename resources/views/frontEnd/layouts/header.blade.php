@@ -18,7 +18,6 @@
                             <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                             <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -62,8 +61,13 @@
                             <li><a href="{{url('/viewcart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                             @if(Auth::check())
                                 <li><a href="{{url('/myaccount')}}"><i class="fa fa-user"></i> My Account</a></li>
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-lock"></i> Logout </a>
-                                </li>
+                                {{-- <li><a href="{{ route('logout') }}"><i class="fa fa-lock"></i> Logout </a></li> --}}
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+    Logout
+</a>    
+<form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+    {{ csrf_field() }}
+</form>
                             @else
                                 <li><a href="{{url('/login_page')}}"><i class="fa fa-lock"></i> Login</a></li>
                             @endif

@@ -31,7 +31,9 @@ class ProductCatController extends Controller
      */
     public function create()
     {
-        return view("/admin/product_cat/create");
+        $index = Product_cat::where('parent_id',0)->get();
+
+        return view("/admin/product_cat/create",compact("index"));
     }
 
     /**
@@ -42,6 +44,7 @@ class ProductCatController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'nama_kategori' => ['required','string','min:4'],
         ]);
@@ -54,8 +57,9 @@ class ProductCatController extends Controller
 
         $product_cat = new Product_cat;
         $product_cat->category_name= $request->nama_kategori;
+        $product_cat->parent_id = $request->parent_id;
         $product_cat->save();
-        return redirect('/admin/product_cat');
+        return redirect("admin/product_cat");
     }
 
     /**

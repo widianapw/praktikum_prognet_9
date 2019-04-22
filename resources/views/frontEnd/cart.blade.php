@@ -25,32 +25,33 @@
                     <tbody>
                         @foreach($cart_datas as $cart_data)
                             <?php
-                                $image_products=DB::table('products')->select('image')->where('id',$cart_data->products_id)->get();
+                                $image_products=DB::table('products')->select('image_name')->join('product_images','product_images.product_id','=','products.id')->where('products.id',$cart_data->product_id)->get();
+                                $image_data = DB::table('products')->where('products.id',$cart_data->product_id)->get()->first();
                             ?>
                             <tr>
                                 <td class="cart_product">
                                     @foreach($image_products as $image_product)
-                                        <a href=""><img src="{{url('products/small',$image_product->image)}}" alt="" style="width: 100px;"></a>
+                                        <a href=""><img src="{{url('images/small',$image_product->image_name)}}" alt="" style="width: 100px;"></a>
                                     @endforeach
                                 </td>
                                 <td class="cart_description">
-                                    <h4><a href="">{{$cart_data->product_name}}</a></h4>
-                                    <p>{{$cart_data->product_code}} | {{$cart_data->size}}</p>
+                                    <h4><a href="">{{$image_data->product_name}}</a></h4>
+                                    
                                 </td>
                                 <td class="cart_price">
-                                    <p>${{$cart_data->price}}</p>
+                                    <p>$ {{$image_data->price}}</p>
                                 </td>
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
-                                        <a class="cart_quantity_up" href="{{url('/cart/update-quantity/'.$cart_data->id.'/1')}}"> + </a>
-                                        <input class="cart_quantity_input" type="text" name="quantity" value="{{$cart_data->quantity}}" autocomplete="off" size="2">
+                                        <a class="cart_quantity_up" href="{{url('cart/update-quantity'.$cart_data->id.'/1')}}"> + </a>
+                                        <input class="cart_quantity_input" type="text" name="quantity" value="{{$cart_data->qty}}" autocomplete="off" size="2">
                                         @if($cart_data->quantity>1)
-                                            <a class="cart_quantity_down" href="{{url('/cart/update-quantity/'.$cart_data->id.'/-1')}}"> - </a>
+                                            <a class="cart_quantity_down" href="{{url('cart/update-quantity/'.$cart_data->id.'/-1')}}"> - </a>
                                         @endif
                                     </div>
                                 </td>
                                 <td class="cart_total">
-                                    <p class="cart_total_price">$ {{$cart_data->price*$cart_data->quantity}}</p>
+                                    <p class="cart_total_price">$ {{$image_data->price*$cart_data->qty}}</p>
                                 </td>
                                 <td class="cart_delete">
                                     <a class="cart_quantity_delete" href="{{url('/cart/deleteItem',$cart_data->id)}}"><i class="fa fa-times"></i></a>

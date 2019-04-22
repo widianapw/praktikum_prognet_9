@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use DB;
+use Intervention\Image\Facades\Image as Image;
 use App\Quotation;
 use App\Product;
 use App\Product_img;
@@ -51,6 +52,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return($request->dis);
         $product = new Product;
         $product->product_name= $request->nama_produk;
         $product->price= $request->harga;
@@ -60,7 +62,7 @@ class ProductController extends Controller
         $product->weight= $request->berat;
         $product->save();
         
-        if($request->dis = "1"){
+        if(!empty($request->dis)){
             $dis = new Discount;
             $dis->id_product = $product->id;
             $dis->percentage = $request->persentase;
@@ -87,14 +89,25 @@ class ProductController extends Controller
         {
             foreach($request->file('filename') as $image)
             {
+
+                
                 $name=$image->getClientOriginalName();
-                $image->move(public_path().'/images/', $name);  
+                $large_image_path=public_path('images/large/'.$name);
+                $medium_image_path=public_path('images/medium/'.$name);
+                $small_image_path=public_path('images/small/'.$name);
+                        //// Resize Images
+                Image::make($image)->save($large_image_path);
+                Image::make($image)->resize(600,600)->save($medium_image_path);
+                Image::make($image)->resize(300,300)->save($small_image_path);
+                // $image->move(public_path().'/images/', $name);  
                 $form= new Product_img();   
                 $form->product_id = $product->id;
                 $form->image_name=$name;  
                 $form->save();       
             }
         }
+        
+
         return redirect('/admin/product');
     }
 
@@ -155,6 +168,7 @@ class ProductController extends Controller
      */
     public function destroy(product $product)
     {
-           
+        Product::where('id','=',$product->id)->delete();
+        return redirect('/admin/product/');           
     }
 }

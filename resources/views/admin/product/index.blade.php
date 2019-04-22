@@ -25,11 +25,18 @@
                 <td>{{$index['stock']}}</td>
                 <td>{{$index['weight']}}</td>
             
-                <td><img src="{{asset('images/'.$index['image_name']) }}" height="50" width="50" alt="img"></td>
+                <td><img src="{{asset('images/small/'.$index['image_name']) }}" height="50" width="50" alt="img"></td>
                 <td><form action="/admin/product/{{$index->id}}/edit" method="GET">
                 	@csrf
                 	<button>Edit</button>
                 	</form>
+                    <form action="/admin/product/{{$index->id}}/" method="POST">
+                                @method("DELETE")
+                                @csrf
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
 
             	</td> 
             </tr>
