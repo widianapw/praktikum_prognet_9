@@ -34,7 +34,7 @@
 	
 	
 	Stok : <input type="number" name="stok" required=""><br>
-  Berat : <input type="number" name="berat" required=""><br>
+  
   kategori : 
   @foreach ($category as $category)
       <input type="checkbox" name="kategori[]" value="{{$category->id}}">{{$category->category_name}}  

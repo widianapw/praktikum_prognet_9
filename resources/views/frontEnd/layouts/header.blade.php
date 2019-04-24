@@ -69,7 +69,7 @@
     {{ csrf_field() }}
 </form>
                             @else
-                                <li><a href="{{url('/login_page')}}"><i class="fa fa-lock"></i> Login</a></li>
+                                <li><a href="{{route('login')}}"><i class="fa fa-lock"></i> Login</a></li>
                             @endif
                         </ul>
                     </div>

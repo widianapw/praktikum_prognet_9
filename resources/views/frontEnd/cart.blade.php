@@ -24,11 +24,14 @@
                     </thead>
                     <tbody>
                         @foreach($cart_datas as $cart_data)
-                            <?php
+                        <?php
                                 $image_products=DB::table('products')->select('image_name')->join('product_images','product_images.product_id','=','products.id')->where('products.id',$cart_data->product_id)->get();
                                 $image_data = DB::table('products')->where('products.id',$cart_data->product_id)->get()->first();
-                            ?>
-                            <tr>
+                        ?>
+                        
+                            
+                            <input type="hidden" name="stock" id="stock-{{$cart_data->product_id}}" value="{{$cart_data->stock}}">
+                            <tr id="tr-{{$cart_data->product_id}}">
                                 <td class="cart_product">
                                     @foreach($image_products as $image_product)
                                         <a href=""><img src="{{url('images/small',$image_product->image_name)}}" alt="" style="width: 100px;"></a>
@@ -43,25 +46,62 @@
                                 </td>
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
-                                        <a class="cart_quantity_up" href="{{url('cart/update-quantity'.$cart_data->id.'/1')}}"> + </a>
-                                        <input class="cart_quantity_input" type="text" name="quantity" value="{{$cart_data->qty}}" autocomplete="off" size="2">
-                                        @if($cart_data->quantity>1)
-                                            <a class="cart_quantity_down" href="{{url('cart/update-quantity/'.$cart_data->id.'/-1')}}"> - </a>
-                                        @endif
+
+                                        
+                                        <a class="cart_quantity_down" id="klik1-{{$cart_data->product_id}}" href="#"> - </a>
+                                        <input class="cart_quantity_input-{{$cart_data->product_id}}" type="text" name="quantity" value="{{$cart_data->qty}}" disabled="" autocomplete="off" size="2">
+                                        <a class="cart_quantity_up" id="klik-{{$cart_data->product_id}}"  href="#"> + </a>
+
+                                        <script type="text/javascript">
+                                            $(document).ready(function(){
+                                                $('#klik-{{$cart_data->product_id}}').click(function(){
+                                                    var qty_awal = $('.cart_quantity_input-{{$cart_data->product_id}}').val();
+                                                    var stock = parseInt($('#stock-{{$cart_data->product_id}}').val());
+                                                    var qty_akhir = parseInt(qty_awal) + 1;
+                                                    if (qty_akhir > stock) {
+                                                        alert("stok tidak mencukupi!");
+                                                    }
+                                                    else{
+                                                        $('.cart_quantity_input-{{$cart_data->product_id}}').val(qty_akhir);    
+                                                    }
+                                                    event.preventDefault();
+                                                });
+
+                                                $('#klik1-{{$cart_data->product_id}}').click(function(){
+                                                    var qty_awal = $('.cart_quantity_input-{{$cart_data->product_id}}').val();
+                                                    var qty_akhir = parseInt(qty_awal) - 1;
+                                                    if (qty_akhir == 0) {
+                                                        var qty_akhir = 1;
+                                                    }
+                                                    $('.cart_quantity_input-{{$cart_data->product_id}}').val(qty_akhir);
+                                                    event.preventDefault();
+                                                });
+
+                                                $('#hapus-{{$cart_data->product_id}}').click(function(){
+                                                    console.log("terklik");
+                                                    $('#tr-{{$cart_data->product_id}}').remove();
+                                                });
+
+                                            });
+                                        </script>
                                     </div>
                                 </td>
                                 <td class="cart_total">
                                     <p class="cart_total_price">$ {{$image_data->price*$cart_data->qty}}</p>
                                 </td>
                                 <td class="cart_delete">
-                                    <a class="cart_quantity_delete" href="{{url('/cart/deleteItem',$cart_data->id)}}"><i class="fa fa-times"></i></a>
+                                    <a class="cart_quantity_delete" id="hapus-{{$cart_data->product_id}}" {{-- href="{{url('/cart/deleteItem',$cart_data->id)}}" --}}><i class="fa fa-times"></i></a>
                                 </td>
                             </tr>
+                            
+                             
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+        
+
     </section> <!--/#cart_items-->
 
     <section id="do_action">

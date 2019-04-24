@@ -17,9 +17,9 @@
                             @endif
                         </a>
                             <a href="{{route('cats',$category->id)}}">{{$category->category_name}}</a>
-
                     </h4>
                 </div>
+                
                 @if(count($sub_categories)>0)
                     <div id="sportswear{{$category->id}}" class="panel-collapse collapse">
                         <div class="panel-body">

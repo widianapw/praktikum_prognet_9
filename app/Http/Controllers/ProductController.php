@@ -40,7 +40,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category = Product_cat::get();
+        $category = Product_cat::where('parent_id','!=',0)->get();
         return view("/admin/product/create",compact('category'));
     }
 
@@ -52,14 +52,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // return($request->dis);
         $product = new Product;
         $product->product_name= $request->nama_produk;
         $product->price= $request->harga;
         $product->description= $request->deskripsi;
         $product->product_rate= $request->rating;
         $product->stock= $request->stok;
-        $product->weight= $request->berat;
         $product->save();
         
         if(!empty($request->dis)){
@@ -73,6 +71,14 @@ class ProductController extends Controller
 
         if(is_array($request->kategori)){
             foreach($request->kategori as $kat){
+                $parent = Product_cat::select('parent_id')->where('id',$kat)->get()->first();
+                $cek = Product_cat_det::where('category_id',$parent->parent_id)->where('product_id',$product->id)->get();
+                if (!empty($cek)) {
+                    $cat = new Product_cat_det;
+                    $cat->product_id = $product->id;
+                    $cat->category_id = $parent->parent_id;
+                    $cat->save();
+                }
                 $cat = new Product_cat_det;
                 $cat->product_id = $product->id;
                 $cat->category_id = $kat;
@@ -88,9 +94,7 @@ class ProductController extends Controller
         if($request->hasfile('filename'))
         {
             foreach($request->file('filename') as $image)
-            {
-
-                
+            {                
                 $name=$image->getClientOriginalName();
                 $large_image_path=public_path('images/large/'.$name);
                 $medium_image_path=public_path('images/medium/'.$name);

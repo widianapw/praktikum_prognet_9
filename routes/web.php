@@ -26,14 +26,14 @@ Route::get('/cart/update-quantity/{id}/{quantity}','CartController@updateQuantit
 
 Auth::routes(['verify' => true]);
 
-
-Route::get('/', 'IndexController@index')->name('home')->middleware('verified');
-// Route::get('/home', 'HomeController@index');
+//mengubah route home dan home controller agar ke /
+Route::get('/', 'IndexController@index');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
 
 Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
     Route::get('/login','AuthAdmin\LoginController@showLoginForm')->name('admin.login');
-    Route::post('/login','AuthAdmin\LoginController@login')->name('admin.login.submit');
+    Route::post('/headelogin','AuthAdmin\LoginController@login')->name('admin.login.submit');
     Route::get('/','AdminController@index')->name('admin.home');
     Route::resource('/product_cat','ProductCatController');
     Route::resource('/product','ProductController');
@@ -45,7 +45,7 @@ Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
 // Route::put('/update-profile/{id}','UsersController@updateprofile');
 // Route::put('/update-password/{id}','UsersController@updatepassword');
 
-// Route::get('/check-out','CheckOutController@index');
+Route::get('/check-out','CheckOutController@index');
 // Route::post('/submit-checkout','CheckOutController@submitcheckout');
 
 // Route::get('/order-review','OrdersController@index');

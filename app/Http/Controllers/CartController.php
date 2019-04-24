@@ -12,7 +12,7 @@ class CartController extends Controller
 {
     public function index(){
         $session_id=Session::get('session_id');
-        $cart_datas=Cart::select('user_id','product_id','qty','status','session_id','price')
+        $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','session_id','price')
             ->join('products','carts.product_id','=','products.id')
             ->where('session_id',$session_id)->get();
         $total_price=0;
@@ -41,7 +41,7 @@ class CartController extends Controller
                     Session::put('session_id',$session_id);
                 }
                 $inputToCart['session_id']=$session_id;
-                $count_duplicateItems=Cart::where('product_id',$inputToCart['product_id'])->count();
+                $count_duplicateItems=Cart::where('product_id',$inputToCart['product_id'])->where('session_id',$inputToCart['session_id'])->count();
                 if($count_duplicateItems>0){
                     return back()->with('message','This Item Added already');
                 }else{
@@ -83,7 +83,7 @@ class CartController extends Controller
         $updated_quantity=$cart_data->qty+$quantity;
 
         if($stockAvailable->stock >= $updated_quantity){
-            DB::table('cart')->where('id',$id)->increment('qty',$quantity);
+            DB::table('carts')->where('id',$id)->increment('qty',$quantity);
             return back()->with('message','Update Quantity already');
         }else{
             return back()->with('message','Stock is not Available!');
