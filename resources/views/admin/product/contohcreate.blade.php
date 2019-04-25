@@ -1,7 +1,6 @@
 @extends('backEnd.layouts.master')
 @section('title','Add Products Page')
 @section('content')
-
     <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}">Products</a> <a href="{{route('product.create')}}" class="current">Add New Product</a> </div>
     <div class="container-fluid">
         @if(Session::has('message'))
@@ -19,6 +18,7 @@
                     <div class="control-group">
                         <label class="control-label">Select Category</label>
                         <div class="controls">
+                            <select name="categories_id" style="width: 415px;">
                                 @foreach($category as $category)
                                     <input type="checkbox" name="kategori[]" value="{{$category->id}}">{{$category->category_name}}
                                 @endforeach
@@ -62,42 +62,38 @@
                         </div>
                     </div>
                     <div class="control-group" >
-                      <label for="price" class="control-label">Foto</label>
-                        <div class="controls">
-                      <input type="file" name="filename[]" class="form-control">
-                      <div class="input-group-btn"> 
-                        <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
-                      </div>
-                    </div>
-                    <div class="clone hide">
-                      <div class="control-group input-group" style="margin-top:10px">
-                        <input type="file" name="filename[]" class="form-control">
-                        <div class="input-group-btn"> 
-                          <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                        </div>
-                      </div>
-                </div>
-              <div class="control-group" >
-              <label for="price" class="control-label"></label>
-              <div class="gallery"></div>
-              <input type="file" name="filename[]" class="form-control" multiple="multiple" id="gallery-photo-add">
-                    <img style="display: none;" id="output_image"/>
-                    <div class="input-group control-group increment" >
-                      <input type="file" name="filename[]" class="form-control" accept="image/*" onchange="preview_image(event)">
-                      <div class="input-group-btn"> 
-                        <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
-                      </div>
-                    </div>
-                      
-                    <div class="clone hide">
-                      <img height="300px" weight="300px" id="output_image"/>
-                      <div class="control-group input-group" style="margin-top:10px">
-                        <input type="file" name="filename[]" class="form-control" accept="image/*" onchange="preview_image(event)">
-                        <div class="input-group-btn"> 
-                          <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                        </div>
-                      </div>
-                    </div>
+          <input type="file" name="filename[]" class="form-control">
+          <div class="input-group-btn"> 
+            <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+          </div>
+        </div>
+        <div class="clone hide">
+          <div class="control-group input-group" style="margin-top:10px">
+            <input type="file" name="filename[]" class="form-control">
+            <div class="input-group-btn"> 
+              <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+            </div>
+          </div>
+    </div> --}}
+  
+  <div class="gallery"></div>
+  <input type="file" name="filename[]" class="form-control" multiple="multiple" id="gallery-photo-add">
+        <img style="display: none;" id="output_image"/>
+        <div class="input-group control-group increment" >
+          <input type="file" name="filename[]" class="form-control" accept="image/*" onchange="preview_image(event)">
+          <div class="input-group-btn"> 
+            <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+          </div>
+        </div>
+        <div class="clone hide">
+          <img height="300px" weight="300px" id="output_image"/>
+          <div class="control-group input-group" style="margin-top:10px">
+            <input type="file" name="filename[]" class="form-control" accept="image/*" onchange="preview_image(event)">
+            <div class="input-group-btn"> 
+              <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+            </div>
+          </div>
+        </div>
                     <div class="control-group">
                         <label for="" class="control-label"></label>
                         <div class="controls">
@@ -110,71 +106,6 @@
     </div>
 @endsection
 @section('jsblock')
-<script type="text/javascript">
-
-
-    $(document).ready(function() {
-
-      $(".btn-success").click(function(){ 
-          var html = $(".clone").html();
-          $(".increment").after(html);
-      });
-
-      $("body").on("click",".btn-danger",function(){ 
-          $(this).parents(".control-group").remove();
-      });
-
-    });
-
-    
-    function myFunction() {
-      var checkBox = document.getElementById("myCheck");
-      var text = document.getElementById("text");
-      if (checkBox.checked == true){
-        text.style.display = "block";
-        
-      } else {
-        text.style.display = "none";
-        
-      }
-    }
-
-    function preview_image(event) 
-    {
-      var reader = new FileReader();
-      reader.onload = function()
-      {
-        var output = document.getElementById('output_image');
-        output.src = reader.result;
-      }
-     reader.readAsDataURL(event.target.files[0]);
-    }
-    $(function() {
-    // Multiple images preview in browser
-    var imagesPreview = function(input, placeToInsertImagePreview) {
-
-        if (input.files) {
-            var filesAmount = input.files.length;
-
-            for (i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
-
-                reader.onload = function(event) {
-                    $($.parseHTML('<img>')).attr('height',100).attr('widht',300).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
-                }
-
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-
-    };
-
-    $('#gallery-photo-add').on('change', function() {
-        imagesPreview(this, 'div.gallery');
-    });
-});
-</script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>

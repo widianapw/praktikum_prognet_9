@@ -9,6 +9,7 @@ use App\Product_img;
 use App\Product_cat;
 use App\Product_cat_det;
 use App\Discount;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -24,7 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $index = Product::select('products.id','products.product_name','products.price','description','product_rate','stock','weight','product_images.image_name','product_categories.category_name')
+        $index = Product::select('products.id','products.product_name','products.price','description','product_rate','stock','product_images.image_name','product_categories.category_name')
         ->join('product_category_details','products.id','=','product_category_details.product_id')
         ->join('product_images','products.id','=','product_images.product_id')
         ->join('product_categories','product_category_details.category_id','=','product_categories.id')
@@ -173,6 +174,6 @@ class ProductController extends Controller
     public function destroy(product $product)
     {
         Product::where('id','=',$product->id)->delete();
-        return redirect('/admin/product/');           
+        return redirect('/admin/product/')->with('message','Data Berhasil Dihapus');           
     }
 }

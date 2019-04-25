@@ -38,15 +38,16 @@
                             <td style="vertical-align: middle;">{{$index['stock']}}</td>
                             <td style="vertical-align: middle;">{{$index['weight']}}</td>
                             <td style="text-align: center;"><img src="{{asset('images/small/'.$index['image_name']) }}" alt="" width="50"></td>
-                            <td style="width: 12%; vertical-align: middle;">
+                            <td style="text-align: center; vertical-align: middle;">
                                 <form style="float: left;" action="/admin/product/{{$index->id}}/edit" method="GET">
                                 @csrf
-                                <button class="btn btn-warning">Edit</button>
+                                <button class="btn btn-danger">Edit</button>
                                 </form>
                                 <form style="float: right;" action="/admin/product/{{$index->id}}/" method="POST">
                                 @method("DELETE")
                                 @csrf
-                                <button type="submit" class="btn btn-danger">Delete<i class="fa fa-trash-o fa-fw" onclick="return confirm('Yakin ingin menghapus data?')"></i>
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
                                 </button>
                             </form>
                             </td>

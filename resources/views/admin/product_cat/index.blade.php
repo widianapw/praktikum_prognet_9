@@ -27,12 +27,13 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$index['category_name']}}</td>
-                        <td style="text-align: center;"><form action="/admin/product_cat/{{$index->id}}/edit" method="GET">
+                        <td style="width: 13%">
+                          <form style="float:left;" action="/admin/product_cat/{{$index->id}}/edit" method="GET">
                             @csrf
                             <button class="btn btn-warning">Edit</button>
                             </form>
 
-                            <form action="/admin/product_cat/{{$index->id}}/" method="POST">
+                            <form style="float:right;" action="/admin/product_cat/{{$index->id}}/" method="POST">
                                 @method("DELETE")
                                 @csrf
                                 <button type="submit" class="btn btn-danger">
