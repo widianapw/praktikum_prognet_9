@@ -20,9 +20,9 @@
                         <th>Nama Produk</th>
                         <th>Harga</th>
                         <th>Deskripsi</th>
-                        <th>Rating</th>
+                        
                         <th>Stok</th>
-                        <th>Berat</th>
+                        
                         <th>Foto</th>
                         <th>Aksi</th>
                     </tr>
@@ -34,20 +34,22 @@
                             <td style="vertical-align: middle;">{{$index['product_name']}}</td>
                             <td style="vertical-align: middle;">{{$index['price']}}</td>
                             <td style="vertical-align: middle;">{{$index['description']}}</td>
-                            <td style="vertical-align: middle;">{{$index['product_rate']}}</td>
+                            
                             <td style="vertical-align: middle;">{{$index['stock']}}</td>
-                            <td style="vertical-align: middle;">{{$index['weight']}}</td>
+                            
                             <td style="text-align: center;"><img src="{{asset('images/small/'.$index['image_name']) }}" alt="" width="50"></td>
-                            <td style="width: 12%; vertical-align: middle;">
-                                <form style="float: left;" action="/admin/product/{{$index->id}}/edit" method="GET">
-                                @csrf
-                                <button class="btn btn-warning">Edit</button>
-                                </form>
-                                <form style="float: right;" action="/admin/product/{{$index->id}}/" method="POST">
-                                @method("DELETE")
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Delete<i class="fa fa-trash-o fa-fw" onclick="return confirm('Yakin ingin menghapus data?')"></i>
-                                </button>
+                            <td style="width: 12%; text-align: center;">
+                                {{-- <div class="btn-group"> --}}
+                                    <form action="/admin/product/{{$index->id}}/edit" method="GET">
+                                    @csrf
+                                    <button style="float: left;" class="btn btn-warning">Edit</button>
+                                    </form>
+                                    <form action="/admin/product/{{$index->id}}/" method="POST">
+                                    @method("DELETE")
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger" >Delete<i class="fa fa-trash-o fa-fw" ></i>
+                                {{-- </button> --}}
+                                </div>
                             </form>
                             </td>
                         </tr>
@@ -70,7 +72,7 @@
     <script src="{{asset('js/matrix.popover.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
-        $(".deleteRecord").click(function () {
+        $(".btn-outline-danger").click(function () {
             var id=$(this).attr('rel');
             var deleteFunction=$(this).attr('rel1');
             swal({

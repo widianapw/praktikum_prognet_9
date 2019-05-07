@@ -18,17 +18,17 @@
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <a href="{{url('/product-detail',$product->id)}}"><img src="{{asset('images/small/'.$product['image_name']) }}" alt="img" /></a>
-                                        <h2>$ {{$product->price}}</h2>
+                                        <h2>Rp {{number_format($product->price)}}</h2>
                                         <p>{{$product->product_name}}</p>
-                                        <a href="{{url('/product-detail',$product->id)}}" class="btn btn-default add-to-cart">View Product</a>
+                                        <a href="{{url('/product-detail',$product->id)}}" class="btn btn-warning add-to-cart">View Product</a>
                                     </div>
                                 </div>
-                                <div class="choose">
+                                {{-- <div class="choose">
                                     <ul class="nav nav-pills nav-justified">
                                         <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
                                         <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                             

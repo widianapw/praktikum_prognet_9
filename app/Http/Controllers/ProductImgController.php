@@ -41,36 +41,36 @@ class ProductImgController extends Controller
      */
     public function store(Request $request)
     {   
-        $this->validate($request, [
+    //     $this->validate($request, [
 
-            'filename' => 'required',
-            'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+    //         'filename' => 'required',
+    //         'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
 
-    ]);
+    // ]);
     
-    if($request->hasfile('filename'))
-     {
-        foreach($request->file('filename') as $image)
-        {
-            $name=$image->getClientOriginalName();
-            $large_image_path=public_path('images/large/'.$filename);
-            $medium_image_path=public_path('images/medium/'.$filename);
-            $small_image_path=public_path('images/small/'.$filename);
-                    //// Resize Images
-            Image::make($image)->save($large_image_path);
-            Image::make($image)->resize(600,600)->save($medium_image_path);
-            Image::make($image)->resize(300,300)->save($small_image_path);
-            // $image->move($large_image_path);  
-            $form= new Product_img();   
-            $form->product_id = "1";
-            $form->image_name=json_encode($name);  
-            $form->save()
-            // $inputData['image']=$filename;
-            // ImageGallery_model::create($inputData);
-        }
-     }
+    // if($request->hasfile('filename'))
+    //  {
+    //     foreach($request->file('filename') as $image)
+    //     {
+    //         $name=$image->getClientOriginalName();
+    //         $large_image_path=public_path('images/large/'.$filename);
+    //         $medium_image_path=public_path('images/medium/'.$filename);
+    //         $small_image_path=public_path('images/small/'.$filename);
+    //                 //// Resize Images
+    //         Image::make($image)->save($large_image_path);
+    //         Image::make($image)->resize(600,600)->save($medium_image_path);
+    //         Image::make($image)->resize(300,300)->save($small_image_path);
+    //         // $image->move($large_image_path);  
+    //         $form= new Product_img();   
+    //         $form->product_id = "1";
+    //         $form->image_name=json_encode($name);  
+    //         $form->save()
+    //         // $inputData['image']=$filename;
+    //         // ImageGallery_model::create($inputData);
+    //     }
+    //  }
 
-    return back()->with('success', 'Your images has been successfully');
+    // return back()->with('success', 'Your images has been successfully');
     }
 
     /**
@@ -115,6 +115,12 @@ class ProductImgController extends Controller
      */
     public function destroy(Product_img $product_img)
     {
-        //
+        // return ($product_img);
+
+        $delete=Product_img::where('id',$product_img->id)->delete();
+        // return ($delete);
+        return redirect()->back();
     }
+
+
 }

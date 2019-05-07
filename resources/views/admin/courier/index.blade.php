@@ -27,19 +27,22 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$index['courier']}}</td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center; width: 13%;">
+                          {{-- <div class="btn-group"> --}}
                             <a href="/admin/courier/{{$index->id}}/edit">
-                                <button class="btn btn-warning">Edit</button>
+                                <button style="float: left;" class="btn btn-warning">Edit</button>
                             </a>
                             
-                            <form action="/admin/courier/{{$index->id}}/" method="POST">
+                            <form action="/admin/courier/{{$index->id}}" method="POST">
                                 @method("DELETE")
                                 @csrf
-                                <button type="submit" class="btn btn-danger">
+                                
+                                <button type="submit" style="float: right;" class="btn btn-danger">
                                     Delete
                                 </button>
+                              
                             </form>
-
+                            {{-- </div> --}}
                         </td> 
                     </tr>
                    @endforeach
@@ -50,7 +53,7 @@
     </div>
 @endsection
 @section('jsblock')
-    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.uniform.js')}}"></script>
@@ -60,24 +63,25 @@
     <script src="{{asset('js/matrix.tables.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
-        $(".deleteRecord").click(function () {
-           var id=$(this).attr('rel');
-           var deleteFunction=$(this).attr('rel1');
-           swal({
-               title:'Are you sure?',
-               text:"You won't be able to revert this!",
-               type:'warning',
-               showCancelButton:true,
-               confirmButtonColor:'#3085d6',
-               cancelButtonColor:'#d33',
-               confirmButtonText:'Yes, delete it!',
-               cancelButtonText:'No, cancel!',
-               confirmButtonClass:'btn btn-success',
-               cancelButtonClass:'btn btn-danger',
-               buttonsStyling:false,
-               reverseButtons:true
-           },function () {
-              window.location.href="/admin/"+deleteFunction+"/"+id;
+      $(document).on('click', '.deleteRecord', function (e) {
+          e.preventDefault();
+          var id = $(this).data('id');
+          swal({
+            title: "Are you sure!",
+            type: "error",
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes!",
+            showCancelButton: true,
+           },
+           function () {
+              $.ajax({
+                type: "POST",
+                url: "admin/courier/"+id,
+                data: {id:id},
+                success: function (data) {
+                              //
+                    }         
+            });
            });
         });
     </script>

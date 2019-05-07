@@ -12,21 +12,31 @@
                     <form class="form-horizontal" method="post" action="/admin/product_cat">
                     @csrf
                         
-                        <div class="form-group">
-                            <label for="sel1">Select Tipe:</label>
-                            <select class="form-control" name="parent_id" onclick="myFunction()" >
-                                <option value="0">Parent Category</option>
-                                <option id="id1">Child Category</option>
-                          </select>
+                        <div class="control-group">
+                            <label class="control-label">Parent Category :</label>
+                            <div class="controls">
+                                    <select class="form-control" name="parent_id" onclick="myFunction()" >
+                                        <option value="0">Parent Category</option>
+                                        <option id="id1">Child Category</option>
+                                  </select>
+                         
+                            </div>
                         </div>
-                        <div id="show" class="form-group" style="display: none">
-                            <label for="sel1">Select parent:</label>
-                            <select class="form-control" name="parent_id">
-                                @foreach($index as $index)
-                                    <option value="{{$index->id}}">{{$index->category_name}}</option>
-                                @endforeach
-                          </select>
+
+                        <div class="control-group" id="show" style="display: none">
+                            <label class="control-label">Child Category :</label>
+                            <div class="controls">
+                                
+                                   
+                                    <select class="form-control" name="parent_id">
+                                        @foreach($index as $index)
+                                            <option value="{{$index->id}}">{{$index->category_name}}</option>
+                                        @endforeach
+                                  </select>
+                                
+                            </div>
                         </div>
+
                         <div class="control-group{{$errors->has('nama_kategori')?' has-error':''}}">
                         
                             <label class="control-label">Category Name :</label>
@@ -57,17 +67,20 @@
     
 @endsection
 @section('jsblock')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.ui.custom.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.uniform.js') }}"></script>
-    <script src="{{ asset('js/select2.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.js') }}"></script>
-    <script src="{{ asset('js/matrix.js') }}"></script>
-    <script src="{{ asset('js/matrix.form_validation.js') }}"></script>
-    <script src="{{ asset('js/matrix.tables.js') }}"></script>
-    <script src="{{ asset('js/matrix.popover.js') }}"></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
+    <script src="{{asset('js/jquery.toggle.buttons.js')}}"></script>
+    <script src="{{asset('js/masked.js')}}"></script>
+    <script src="{{asset('js/jquery.uniform.js')}}"></script>
+    <script src="{{asset('js/select2.min.js')}}"></script>
+    <script src="{{asset('js/matrix.js')}}"></script>
+    <script src="{{asset('js/matrix.form_common.js')}}"></script>
+    <script src="{{asset('js/wysihtml5-0.3.0.js')}}"></script>
+    <script src="{{asset('js/jquery.peity.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
+
     <script type="text/javascript">
         function myFunction() {
         var select = document.getElementById("id1");

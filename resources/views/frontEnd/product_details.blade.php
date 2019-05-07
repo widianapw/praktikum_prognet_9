@@ -1,5 +1,5 @@
 @extends('frontEnd.layouts.master')
-@section('title','Detial Page')
+@section('title','Detail Page')
 @section('slider')
 @endsection
 @section('content')
@@ -12,6 +12,11 @@
                 @if(Session::has('message'))
                     <div class="alert alert-success text-center" role="alert">
                         {{Session::get('message')}}
+                    </div>
+                @endif
+                @if(Session::has('success'))
+                    <div class="alert alert-success text-center" role="alert">
+                        {{Session::get('success')}} <b><a href="/viewcart">View cart</a></b>
                     </div>
                 @endif
         <div class="product-details"><!--product-details-->
@@ -54,7 +59,7 @@
                         </select>
                         </span><br> --}}
                         <span>
-                            <span id="dynamic_price">US ${{$detail_product->price}}</span>
+                            <span id="dynamic_price">Rp {{number_format($detail_product->price)}}</span>
                             <label>Quantity:</label>
                             <input type="text" name="quantity" id="inputStock"/>
                             @if($detail_product->stock >0)
@@ -72,7 +77,9 @@
                             @endif
                         </p>
                         <p><b>Condition:</b> New</p>
-                        <a href=""><img src="{{asset('frontEnd/images/product-details/share.png')}}" class="share img-responsive"  alt="" /></a>
+
+                        <p><b>Discount:</b>@if(empty($dis)) None @else {{$dis->percentage}}% untill {{date('d M Y', strtotime($dis->end))}} @endif</p>
+                        {{-- <a href=""><img src="{{asset('frontEnd/images/product-details/share.png')}}" class="share img-responsive"  alt="" /></a> --}}
                     </div><!--/product-information-->
                 </form>
 
@@ -83,8 +90,8 @@
             <div class="col-sm-12">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-                    <li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
-                    <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+                    {{-- <li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
+                    <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li> --}}
                 </ul>
             </div>
             <div class="tab-content">

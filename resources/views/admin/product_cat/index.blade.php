@@ -8,46 +8,100 @@
                 <strong>Well done!</strong> {{Session::get('message')}}
             </div>
         @endif
-        <div class="widget-box">
-            <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                <h5>List Categories</h5>
-            </div>
-            <div class="widget-content nopadding">
-                <table class="table table-bordered data-table">
-                    <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Kategori</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($index as $index)
-                    
-                    <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$index['category_name']}}</td>
-                        <td style="width: 13%">
-                          <form style="float:left;" action="/admin/product_cat/{{$index->id}}/edit" method="GET">
-                            @csrf
-                            <button class="btn btn-warning">Edit</button>
-                            </form>
+          <div class="widget-box">
+            <h1>Parent Kategori</h1>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>List Categories</h5>
+                </div>
 
-                            <form style="float:right;" action="/admin/product_cat/{{$index->id}}/" method="POST">
-                                @method("DELETE")
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered data-table">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Kategori</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($index as $i)
+                        
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$i['category_name']}}</td>
+                            <td style="width: 13%; text-align: center;">
+                              {{-- <div class="btn-group"> --}}
+                              <form action="/admin/product_cat/{{$i->id}}/edit" method="GET">
                                 @csrf
-                                <button type="submit" class="btn btn-danger">
-                                    Delete
-                                </button>
-                            </form>
+                                <button style="float: left;" class="btn btn-warning">Edit</button>
+                                </form>
 
-                        </td> 
-                    </tr>
-                   @endforeach
-                    </tbody>
-                </table>
+                                <form  action="/admin/product_cat/{{$i->id}}/" method="POST">
+                                    @method("DELETE")
+                                    @csrf
+                                    <button style="float: right;" type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                              {{-- </div> --}}
+                            </td> 
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+
+        @foreach($index as $index)
+            <?php
+              $products_cat =DB::table('product_categories')->where('parent_id',$index->id)->get();
+            ?>
+            
+            <div class="widget-box">
+              <h3>{{$index->category_name}}</h3>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>List Categories</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered data-table">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Kategori</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($products_cat as $cat)
+                        
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$cat->category_name}}</td>
+                            <td style="width: 13%; text-align: center; ">
+                              
+                              <form action="/admin/product_cat/{{$cat->id}}/edit" method="GET">
+                                @csrf
+                                <button style="float: left;" class="btn btn-warning">Edit</button>
+                                </form>
+
+                                <form action="/admin/product_cat/{{$cat->id}}/" method="POST">
+                                    @method("DELETE")
+                                    @csrf
+                                    <button style="float: right;" type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                                
+
+                            </td> 
+                        </tr>
+                       @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          @endforeach
     </div>
 @endsection
 @section('jsblock')

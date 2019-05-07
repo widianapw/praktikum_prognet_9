@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Product_cat;
 use App\Product_img;
+use App\Discount;
+use Illuminate\Support\Carbon;
 class IndexController extends Controller
 {
     public function index(){
@@ -45,9 +47,10 @@ class IndexController extends Controller
         	->groupBy('products.id')->where('products.id',$id)
         	->get()->first();
         $imagesGalleries=Product_img::where('product_id',$id)->get();
+        $dis = Discount::where('id_product',$id)->where('start','<=',CARBON::NOW())->where('end','>=',CARBON::NOW())->get()->first();
         
         // $relateProducts=Products_model::where([['id','!=',$id],['categories_id',$detail_product->categories_id]])->get();
-        return view('frontEnd.product_details',compact('detail_product','imagesGalleries'));
+        return view('frontEnd.product_details',compact('detail_product','imagesGalleries','dis'));
     }
     
 }

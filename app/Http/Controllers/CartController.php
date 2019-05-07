@@ -54,7 +54,7 @@ class CartController extends Controller
                     $cart->status = "0";
                     $cart->save();
                     // return($cart);
-                    return back()->with('message','Add To Cart Already');
+                    return back()->with('success','Add To Cart Already');
                 }
             }else{
                 return back()->with('message','Stock is not Available!');
@@ -72,22 +72,31 @@ class CartController extends Controller
     }
 
 
-    public function updateQuantity($id,$quantity){
+    public function update(request $request, Cart $cart){
         Session::forget('discount_amount_price');
         Session::forget('coupon_code');
         // $sku_size=DB::table('cart')->select('product_code','size','quantity')->where('id',$id)->first();
+        
+        $cart = Cart::where('id',$request->id)->get->first();
+        $cart->qty = $request->qty;
+      // update cart
+        $cart->save();
 
-        $cart_data = Cart::where('id',$id)->get()->first();
-        // return($cart_data->qty);
-        $stockAvailable=Product::where('id',$cart_data->product_id)->get()->first();
-        $updated_quantity=$cart_data->qty+$quantity;
+        $output = '<div class="alert alert-success"> Data Updated </div>';
 
-        if($stockAvailable->stock >= $updated_quantity){
-            DB::table('carts')->where('id',$id)->increment('qty',$quantity);
-            return back()->with('message','Update Quantity already');
-        }else{
-            return back()->with('message','Stock is not Available!');
-        }
+        echo json_encode($output);
+
+    //     $cart_data = Cart::where('id',$id)->get()->first();
+    //     // return($cart_data->qty);
+    //     $stockAvailable=Product::where('id',$cart_data->product_id)->get()->first();
+    //     $updated_quantity=$cart_data->qty+$quantity;
+
+    //     if($stockAvailable->stock >= $updated_quantity){
+    //         DB::table('carts')->where('id',$id)->increment('qty',$quantity);
+    //         return back()->with('message','Update Quantity already');
+    //     }else{
+    //         return back()->with('message','Stock is not Available!');
+    //     }
     }
 
 

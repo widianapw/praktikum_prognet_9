@@ -8,13 +8,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Client;
+use App\Cart;
+use App\courier;
 
 class CheckOutController extends Controller
 {
+
+  public function __construct()
+    {
+        $this->middleware('auth:web');
+    }
+
+
     public function index(){
     	$client = new \GuzzleHttp\Client();
     	try{
-    		$response = $client->get('https://api.rajaongkir.com/starter/province',
+    		$response = $client->get('https://api.rajaongkir.com/starter/city',
     			array(
     				'headers' => array(
     					'key' => '248b6738fe208a6df6b1af7ea7f9bebc'
@@ -26,19 +35,62 @@ class CheckOutController extends Controller
     	}
     	$json = $response->getBody()->getContents();
     	$array_result = json_decode($json,true);
-      // print count($array_result["rajaongkir"]["results"]);
-      for ($i=0; $i <count($array_result["rajaongkir"]["results"]) ; $i++) { 
-        print $array_result["rajaongkir"]["results"][$i]["province"]."<br>";
+      $hai = $array_result["rajaongkir"]["results"];  
+      $jum = count($hai);
+      $countries=$hai;
+      $user_login=User::where('id',Auth::id())->first();
+      $courier=courier::get();
+      return view('checkout.index',compact('countries','user_login','courier'));
 
-      }
-      
-      
-      
-    	// print_r($array_result);	
 
-        // $countries=DB::table('countries')->get();
-        // $user_login=User::where('id',Auth::id())->first();
-        // return view('checkout.index',compact('countries','user_login'));
+    }
+
+    public function checkshipping(Request $request){
+        $client = new \GuzzleHttp\Client();
+        try{
+          $response = $client->get('https://api.rajaongkir.com/starter/city',
+            array(
+              'headers' => array(
+                'key' => '248b6738fe208a6df6b1af7ea7f9bebc'
+              )
+            )
+          );
+        }catch(RequestException $e){
+          var_dump($e->getResponse()->getBody()->getContent());
+        }
+        $json = $response->getBody()->getContents();
+        $array_result = json_decode($json,true);
+        $hai = $array_result["rajaongkir"]["results"];  
+        $jum = count($hai);
+        $countries=$hai;
+        $user_login=User::where('id',Auth::id())->first();
+        $courier=courier::get();
+
+
+
+        $client = new \GuzzleHttp\Client();
+        try{
+          $response = $client->request('POST','https://api.rajaongkir.com/starter/cost',
+            [
+              'body' => "origin=80227&destination=".$request->kota."&weight=1000&courier=".$request->kurir,
+              // 'body' => "origin=Denpasar&destination=Cirebon".$request->tujuan."&weight=1000&courier=".$request->courier,
+              'headers' => [
+                
+                'key' => '248b6738fe208a6df6b1af7ea7f9bebc',
+                'content-type' => 'application/x-www-form-urlencoded',
+              ]
+            ]
+          );
+        }catch(RequestException $e){
+          var_dump($e->getResponse()->getBody()->getContent());
+        }
+        $json = $response->getBody()->getContents();
+        $array_result = json_decode($json,true);
+
+        $service = ($array_result["rajaongkir"]["results"]["0"]["costs"]);
+        
+        return view("checkout.index",compact("service",'countries','user_login','courier'));
+
     }
     
     public function submitcheckout(Request $request){

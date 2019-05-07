@@ -1,8 +1,8 @@
 @extends('backEnd.layouts.master')
 @section('title','Add Products Page')
 @section('content')
-
-    <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}">Products</a> <a href="{{route('product.create')}}" class="current">Add New Product</a> </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}">Products</a> <a href="{{route('product.create')}}" class="current">Edit Products</a> </div>
     <div class="container-fluid">
         @if(Session::has('message'))
             <div class="alert alert-success text-center" role="alert">
@@ -11,26 +11,12 @@
         @endif
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                <h5>Add New Products</h5>
+                <h5>Edit Products</h5>
             </div>
             <div class="widget-content nopadding">
-                <form method="post" action="/admin/product" class="form-horizontal" enctype="multipart/form-data">
-                  @csrf
+                <form action="{{route('product.update',$test->id)}}" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
-                    <div class="control-group">
-                        <label class="control-label">Select Category</label>
-                        <div class="controls">
-                                @foreach ($category as $category)
-                                <input type="checkbox" name="kategori[]" value="{{$category->id}}" 
-                                @foreach ($cat as $cat1)  
-                                  @if ($category->id == $cat1['category_id'])
-                                    checked=""
-                                  @endif
-                                @endforeach>
-                                  {{$category->category_name}}  
-                              @endforeach
-                        </div>
-                    </div>
+                    @method("PUT")
                     <div class="control-group">
                         <label for="p_name" class="control-label">Nama</label>
                         <div class="controls">
@@ -50,180 +36,170 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label for="p_name" class="control-label">Berat</label>
+                        <label for="description" class="control-label">Deskripsi</label>
                         <div class="controls">
-                            <input type="number" name="stok" class="form-control" value="{{$test->weight}}" title="" required="required" style="width: 400px;">                            
+                            <textarea class="textarea_editor span12"  name="deskripsi" rows="6" placeholder="Product Description" style="width: 580px;">{{$test->description}}</textarea>
+                            <span class="text-danger"></span>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label for="description" class="control-label">Deskripsi</label>
+                        <label class="control-label">Select Category</label>
                         <div class="controls">
-                            <textarea class="textarea_editor span12" name="deskripsi" rows="6" placeholder="Product Description" value="{{$test->description}}" style="width: 580px;"></textarea>
-                            <span class="text-danger"></span>
+                            
+                                @foreach($category as $category)
+                                    <input type="checkbox" name="kategori[]" value="{{$category->id}}"
+                                      @foreach ($cat as $cat1)  
+                                      @if ($category->id == $cat1['category_id'])
+                                        checked=""
+                                      @endif
+                                    @endforeach
+                                    >{{$category->category_name}}
+                                @endforeach
+                            
                         </div>
                     </div>
                     <div class="control-group">
                         <label for="price" class="control-label">Diskon</label>
                         <div class="controls">
-                            <input type="checkbox" id="myCheck" name="dis" onclick="myFunction()">
-                            <div style="display: none" id="text">
-                              <input type="text" name="persentase" placeholder="Persentase diskon"><br>
-                              <input type="date" name="tanggal_mulai" placeholder="tanggal mulai" ><br>
-                              <input type="date" name="tanggal_akhir" placeholder="tanggal akhir" ><br>
+                            <input type="checkbox" id="myCheck" name="dis" onclick="myFunction()"
+                            @if(!empty($diskon))
+                                checked="" 
+                            @endif
+                            >
+                            
+                        </div>
+                    </div>
+
+                    <div @if(empty($diskon)) style="display: none" @endif id="text">
+                        <div class="control-group">
+                            <label class="control-label">Persentase</label>
+                                <div class="controls">
+                                    <input type="text" name="persentase" 
+                                    @if(!empty($diskon))
+                                        value="{{$diskon->percentage}}"
+                                    @endif  placeholder="Persentase diskon">
+                                </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Tanggal Mulai</label>
+                                <div class="controls">
+                            
+                                  <input type="date" name="tanggal_mulai" 
+                                  @if(!empty($diskon))
+                                    value="{{$diskon->start}}"
+                                  @endif placeholder="tanggal mulai" >
+                                </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label">Tanggal Akhir</label>
+                            <div class="controls">
+                                <input type="date" name="tanggal_akhir" 
+                                      @if(!empty($diskon))
+                                        value="{{$diskon->end}}"
+                                @endif placeholder="tanggal akhir" >
                             </div>
                         </div>
+
                     </div>
-                    <div class="control-group" >
-                      <label for="price" class="control-label">Foto</label>
-                        <div class="controls">
-                      <input type="file" name="filename[]" class="form-control">
-                      <div class="input-group-btn"> 
-                        <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
-                      </div>
+
+                <div class="control-group">    
+                <div class="span6 controls">
+                    <div class="widget-box">
+                    <div class="widget-title"> <span class="icon"><i class="icon-time"></i></span>
+                        <h5>List Images Galleries</h5>
                     </div>
-                    <div class="clone hide">
-                      <div class="control-group input-group" style="margin-top:10px">
-                        <input type="file" name="filename[]" class="form-control">
-                        <div class="input-group-btn"> 
-                          <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                        </div>
-                      </div>
+                    <div class="widget-content nopadding">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php $i=1; ?>
+                                @foreach($img as $imageGallery)
+                                    <tr>
+                                        <td class="taskDesc" style="text-align: center;vertical-align: middle;">{{$i++}}</td>
+                                        <td class="taskOptions" style="text-align: center;vertical-align: middle;"><img src="{{asset('images/small/'.$imageGallery['image_name']) }}" class="img-responsive" alt="Image" width="60"></td>
+                                        <td style="text-align: center;vertical-align: middle;"><a href="javascript:" rel="{{$imageGallery->id}}" rel1="product_img" class="btn btn-danger btn-mini deleteRecord">Delete</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-              <div class="control-group" >
-              <label for="price" class="control-label"></label>
-              <input type="file" name="filename[]" class="form-control" >
-              <div class="input-group-btn"> 
-                <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
               </div>
             </div>
-            <div class="clone hide">
-              <div class="control-group input-group" style="margin-top:10px">
-                <input type="file" name="filename[]" class="form-control">
-                <div class="input-group-btn"> 
-                  <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                </div>
-              </div>
-                </div>
+
+                    <div class="control-group" >
+                        <label for="Foto" class="control-label">Foto</label>
+                            <div class="controls">
+                                <input type="file" name="filename[]" class="form-control" multiple="multiple" id="gallery-photo-add">
+                            </div>
+                        <div class="gallery"></div>
+                    </div>
+  
                     <div class="control-group">
                         <label for="" class="control-label"></label>
                         <div class="controls">
-                            <button type="submit" class="btn btn-success">Add New Product</button>
+                            <button type="submit" class="btn btn-warning">Edit Product</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    function myFunction() {
+      var checkBox = document.getElementById("myCheck");
+      var text = document.getElementById("text");
+      if (checkBox.checked == true){
+        text.style.display = "block";
+        
+      } else {
+        text.style.display = "none";
+        
+      }
+
+//     $(function() {
+//     // Multiple images preview in browser
+//     var imagesPreview = function(input, placeToInsertImagePreview) {
+
+//         if (input.files) {
+//             var filesAmount = input.files.length;
+
+//             for (i = 0; i < filesAmount; i++) {
+//                 var reader = new FileReader();
+
+//                 reader.onload = function(event) {
+//                     $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+//                 }
+
+//                 reader.readAsDataURL(input.files[i]);
+//             }
+//         }
+
+//     };
+
+//     $('#gallery-photo-add').on('change', function() {
+//         imagesPreview(this, 'div.gallery');
+//     });
+// });
+    }
+    </script>
 @endsection
 @section('jsblock')
-<script type="text/javascript">
-
-
-    $(document).ready(function() {
-
-      $(".btn-success").click(function(){ 
-          var html = $(".clone").html();
-          $(".increment").after(html);
-      });
-
-      $("body").on("click",".btn-danger",function(){ 
-          $(this).parents(".control-group").remove();
-      });
-
-    });
-
-    
-    function myFunction() {
-      var checkBox = document.getElementById("myCheck");
-      var text = document.getElementById("text");
-      if (checkBox.checked == true){
-        text.style.display = "block";
-        
-      } else {
-        text.style.display = "none";
-        
-      }
-    }
-
-    function preview_image(event) 
-    {
-      var reader = new FileReader();
-      reader.onload = function()
-      {
-        var output = document.getElementById('output_image');
-        output.src = reader.result;
-      }
-     reader.readAsDataURL(event.target.files[0]);
-    }
-    $(function() {
-    // Multiple images preview in browser
-    var imagesPreview = function(input, placeToInsertImagePreview) {
-
-        if (input.files) {
-            var filesAmount = input.files.length;
-
-            for (i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
-
-                reader.onload = function(event) {
-                    $($.parseHTML('<img>')).attr('height',100).attr('widht',300).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
-                }
-
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-
-    };
-
-    $('#gallery-photo-add').on('change', function() {
-        imagesPreview(this, 'div.gallery');
-    });
-});
-</script>
-<script type="text/javascript">
-
-
-    $(document).ready(function() {
-
-      $(".btn-success").click(function(){ 
-          var html = $(".clone").html();
-          $(".increment").after(html);
-      });
-
-      $("body").on("click",".btn-danger",function(){ 
-          $(this).parents(".control-group").remove();
-      });
-
-    });
-
-    
-    function myFunction() {
-      var checkBox = document.getElementById("myCheck");
-      var text = document.getElementById("text");
-      var text1 = document.getElementById("text1");
-      var text2 = document.getElementById("text2");
-      if (checkBox.checked == true){
-        text.style.display = "block";
-        text1.style.display = "block";
-        
-        text2.style.display = "block";
-      } else {
-        text.style.display = "none";
-        text1.style.display = "none";
-        text2.style.display = "none";
-        
-      }
-    }
-
-</script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
     <script src="{{asset('js/jquery.toggle.buttons.js')}}"></script>
-    <script src="{{asset('js/masked.js')}}"></script>
+    <script src="{{asset('js/masked.js')}}"></script>s
     <script src="{{asset('js/jquery.uniform.js')}}"></script>
     <script src="{{asset('js/select2.min.js')}}"></script>
     <script src="{{asset('js/matrix.js')}}"></script>
@@ -231,7 +207,30 @@
     <script src="{{asset('js/wysihtml5-0.3.0.js')}}"></script>
     <script src="{{asset('js/jquery.peity.min.js')}}"></script>
     <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
         $('.textarea_editor').wysihtml5();
+         
+        $(".deleteRecord").click(function () {
+            var id=$(this).attr('rel');
+            var deleteFunction=$(this).attr('rel1');
+            swal({
+                title:'Are you sure?',
+                text:"You won't be able to revert this!",
+                type:'warning',
+                showCancelButton:true,
+                confirmButtonColor:'#3085d6',
+                cancelButtonColor:'#d33',
+                confirmButtonText:'Yes, delete it!',
+                cancelButtonText:'No, cancel!',
+                confirmButtonClass:'btn btn-success',
+                cancelButtonClass:'btn btn-danger',
+                buttonsStyling:false,
+                reverseButtons:true
+            },function () {
+                window.location.href="/admin/"+deleteFunction+"/"+id;
+            });
+        });
+    
     </script>
 @endsection

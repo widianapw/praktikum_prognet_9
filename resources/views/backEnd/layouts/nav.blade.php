@@ -20,12 +20,6 @@
                 <li><a href="{{url('/admin/courier/create')}}">Add New Courier</a></li>
             </ul>
         </li>
-        <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Product Image</span></a>
-            <ul>
-                <li><a href="{{url('/admin/product_img/create')}}">Add New Image</a></li>
-                
-            </ul>
-        </li>
     </ul>
 </div>
 <!--sidebar-menu-->

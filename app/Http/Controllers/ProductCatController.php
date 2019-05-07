@@ -20,7 +20,7 @@ class ProductCatController extends Controller
      */
     public function index()
     {
-        $index = Product_cat::get();
+        $index = Product_cat::where('parent_id',0)->get();
         return view("/admin/product_cat/index",compact("index"));
     }
 
@@ -81,7 +81,8 @@ class ProductCatController extends Controller
      */
     public function edit(Product_cat $product_cat)
     {
-        $test = Product_cat::find($product_cat)->first();
+        // return ($product_cat);
+        $test = Product_cat::where('id',$product_cat->id)->first();
         return view("/admin/product_cat/edit",compact("test"));
     }
 

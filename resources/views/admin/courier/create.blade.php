@@ -12,9 +12,9 @@
                     <form class="form-horizontal" method="post" action="/admin/courier">
                     @csrf
                         <div class="control-group{{$errors->has('courier')?' has-error':''}}">
-                            <label class="control-label">Category Name :</label>
+                            <label class="control-label">Courier Name :</label>
                             <div class="controls">
-                                <input id="name" type="text" class="form-control{{ $errors->has('courier') ? ' is-invalid' : '' }}" name="courier" value="{{ old('courier') }}" required="" autofocus>
+                                <input id="name" type="text" class="form-control{{ $errors->has('courier') ? ' is-invalid' : '' }}" name="courier" value="{{ old('courier') }}" required="" autofocus="">
 
                                 @if ($errors->has('courier'))
                                     <span class="invalid-feedback" role="alert">
@@ -39,15 +39,17 @@
     </div>
 @endsection
 @section('jsblock')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.ui.custom.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.uniform.js') }}"></script>
-    <script src="{{ asset('js/select2.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.js') }}"></script>
-    <script src="{{ asset('js/matrix.js') }}"></script>
-    <script src="{{ asset('js/matrix.form_validation.js') }}"></script>
-    <script src="{{ asset('js/matrix.tables.js') }}"></script>
-    <script src="{{ asset('js/matrix.popover.js') }}"></script>
+     <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
+    <script src="{{asset('js/jquery.toggle.buttons.js')}}"></script>
+    <script src="{{asset('js/masked.js')}}"></script>
+    <script src="{{asset('js/jquery.uniform.js')}}"></script>
+    <script src="{{asset('js/select2.min.js')}}"></script>
+    <script src="{{asset('js/matrix.js')}}"></script>
+    <script src="{{asset('js/matrix.form_common.js')}}"></script>
+    <script src="{{asset('js/wysihtml5-0.3.0.js')}}"></script>
+    <script src="{{asset('js/jquery.peity.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
 @endsection
