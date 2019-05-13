@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,10 @@ use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Client;
 use App\Cart;
 use App\courier;
+use Agungjk\Rajaongkir\RajaOngkirFacade as RajaOngkir;
+
+
+
 
 class CheckOutController extends Controller
 {
@@ -21,6 +26,10 @@ class CheckOutController extends Controller
 
 
     public function index(){
+
+      
+
+
     	$client = new \GuzzleHttp\Client();
     	try{
     		$response = $client->get('https://api.rajaongkir.com/starter/city',
@@ -33,6 +42,8 @@ class CheckOutController extends Controller
     	}catch(RequestException $e){
     		var_dump($e->getResponse()->getBody()->getContent());
     	}
+
+      $session_id=Session::get('session_id');
     	$json = $response->getBody()->getContents();
     	$array_result = json_decode($json,true);
       $hai = $array_result["rajaongkir"]["results"];  
@@ -40,9 +51,18 @@ class CheckOutController extends Controller
       $countries=$hai;
       $user_login=User::where('id',Auth::id())->first();
       $courier=courier::get();
-      return view('checkout.index',compact('countries','user_login','courier'));
 
+      // return($countries);
 
+      $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price')
+            ->join('products','carts.product_id','=','products.id')
+            ->where('user_id',Auth::id())->get();
+        $total_price=0;
+        foreach ($cart_datas as $cart_data){
+            $total_price+=$cart_data->price*$cart_data->qty;
+        }
+
+      return view('checkout.index',compact('countries','user_login','courier','total_price'));
     }
 
     public function checkshipping(Request $request){
@@ -63,10 +83,50 @@ class CheckOutController extends Controller
         $hai = $array_result["rajaongkir"]["results"];  
         $jum = count($hai);
         $countries=$hai;
-        $user_login=User::where('id',Auth::id())->first();
-        $courier=courier::get();
+        $postal= $request->kota;
+        for ($i=0; $i < $jum ; $i++) { 
+          if ($countries[$i]["postal_code"] == $postal) {
+            $kota = $countries[$i]["city_name"];
+            $province_id = $countries[$i]["province_id"];
+          }
+        }
+        
+
+        $client = new \GuzzleHttp\Client();
+        try{
+          $response = $client->get('https://api.rajaongkir.com/starter/province',
+            array(
+              'headers' => array(
+                'key' => '248b6738fe208a6df6b1af7ea7f9bebc'
+              )
+            )
+          );
+        }catch(RequestException $e){
+          var_dump($e->getResponse()->getBody()->getContent());
+        }
+        $json = $response->getBody()->getContents();
+        $array_result = json_decode($json,true);
+        $list_province = $array_result["rajaongkir"]["results"];
+        $count_province = count($list_province);
+        for ($i=0; $i <$count_province ; $i++) { 
+          if ($list_province[$i]["province_id"]==$province_id) {
+              $provinsi = $list_province[$i]["province"];
+            }  
+        }
+        
 
 
+
+        
+
+        $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price')
+            ->join('products','carts.product_id','=','products.id')
+            ->where('user_id',Auth::id())->get();
+        $total_price=0;
+        foreach ($cart_datas as $cart_data){
+            $total_price+=$cart_data->price*$cart_data->qty;
+        }
+        // return($total_price);
 
         $client = new \GuzzleHttp\Client();
         try{
@@ -86,57 +146,23 @@ class CheckOutController extends Controller
         }
         $json = $response->getBody()->getContents();
         $array_result = json_decode($json,true);
-
         $service = ($array_result["rajaongkir"]["results"]["0"]["costs"]);
-        
-        return view("checkout.index",compact("service",'countries','user_login','courier'));
+
+        $user_login=User::where('id',Auth::id())->first();
+        $courier=courier::get();
+        $nama = $request->nama;
+        $kurir=$request->kurir;
+        $alamat = $request->alamat;
+        $telpon = $request->telpon;
+        // return($service);
+        return view("checkout.index",compact("service",'countries','user_login','courier','kurir','total_price','kota','provinsi','alamat','nama','telpon'));
 
     }
     
     public function submitcheckout(Request $request){
-       $this->validate($request,[
-           'billing_name'=>'required',
-           'billing_address'=>'required',
-           'billing_city'=>'required',
-           'billing_state'=>'required',
-           'billing_pincode'=>'required',
-           'billing_mobile'=>'required',
-           'shipping_name'=>'required',
-           'shipping_address'=>'required',
-           'shipping_city'=>'required',
-           'shipping_state'=>'required',
-           'shipping_pincode'=>'required',
-           'shipping_mobile'=>'required',
-       ]);
-        $input_data=$request->all();
-       $count_shippingaddress=DB::table('delivery_address')->where('users_id',Auth::id())->count();
-       if($count_shippingaddress==1){
-           DB::table('delivery_address')->where('users_id',Auth::id())->update(['name'=>$input_data['shipping_name'],
-               'address'=>$input_data['shipping_address'],
-               'city'=>$input_data['shipping_city'],
-               'state'=>$input_data['shipping_state'],
-               'country'=>$input_data['shipping_country'],
-               'pincode'=>$input_data['shipping_pincode'],
-               'mobile'=>$input_data['shipping_mobile']]);
-       }else{
-            DB::table('delivery_address')->insert(['users_id'=>Auth::id(),
-                'users_email'=>Session::get('frontSession'),
-                'name'=>$input_data['shipping_name'],
-                'address'=>$input_data['shipping_address'],
-                'city'=>$input_data['shipping_city'],
-                'state'=>$input_data['shipping_state'],
-                'country'=>$input_data['shipping_country'],
-                'pincode'=>$input_data['shipping_pincode'],
-                'mobile'=>$input_data['shipping_mobile'],]);
-       }
-        DB::table('users')->where('id',Auth::id())->update(['name'=>$input_data['billing_name'],
-            'address'=>$input_data['billing_address'],
-            'city'=>$input_data['billing_city'],
-            'state'=>$input_data['billing_state'],
-            'country'=>$input_data['billing_country'],
-            'pincode'=>$input_data['billing_pincode'],
-            'mobile'=>$input_data['billing_mobile']]);
-       return redirect('/order-review');
+      $data=$request->all();
+      
+      return redirect('/order-review',compact($data));
 
     }
 }

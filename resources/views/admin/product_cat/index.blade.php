@@ -54,7 +54,7 @@
 
         @foreach($index as $index)
             <?php
-              $products_cat =DB::table('product_categories')->where('parent_id',$index->id)->get();
+              $products_cat =DB::table('product_categories')->where('parent_id',$index->id)->where('deleted_at',NULL)->get();
             ?>
             
             <div class="widget-box">

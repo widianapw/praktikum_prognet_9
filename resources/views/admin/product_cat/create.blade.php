@@ -15,27 +15,28 @@
                         <div class="control-group">
                             <label class="control-label">Parent Category :</label>
                             <div class="controls">
-                                    <select class="form-control" name="parent_id" onclick="myFunction()" >
+                                    <select class="form-control" name="parent_id" id="parent_id" onclick="myFunction()" >
                                         <option value="0">Parent Category</option>
-                                        <option id="id1">Child Category</option>
+                                        <option value="1" id="id1">Child Category</option>
                                   </select>
                          
                             </div>
                         </div>
 
+                        
+
                         <div class="control-group" id="show" style="display: none">
                             <label class="control-label">Child Category :</label>
                             <div class="controls">
-                                
-                                   
-                                    <select class="form-control" name="parent_id">
+                                    <select class="form-control" id="parent_id1" name="parent_id1">
                                         @foreach($index as $index)
                                             <option value="{{$index->id}}">{{$index->category_name}}</option>
                                         @endforeach
-                                  </select>
-                                
+                                  </select>            
                             </div>
                         </div>
+
+                        
 
                         <div class="control-group{{$errors->has('nama_kategori')?' has-error':''}}">
                         

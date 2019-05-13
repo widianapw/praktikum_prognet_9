@@ -38,24 +38,22 @@
                                     {{-- @endforeach --}}
                                 </td>
                                 <td class="cart_description">
-                                    <p style="font-size: 30px">{{$image_data->product_name}}</p>
+                                    <p style="font-size: 20px">{{$image_data->product_name}}</p>
                                 </td>
                                 <td class="cart_price">
-                                    <p style="font-size: 30px">$ {{$image_data->price}}</p>
+                                    <p style="font-size: 20px">Rp {{number_format($image_data->price)}}</p>
                                 </td>
+
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
-
-                                        
                                         <button id="klik1-{{$cart_data->id}}" class="btn btn-warning btn-sm"> - </button>
                                         <input class="cart_quantity_input-{{$cart_data->id}}" style="text-align: center; background-color: white;" type="text" name="quantity" value="{{$cart_data->qty}}" autocomplete="off" disabled="" size="3">
-                                        <button id="klik-{{$cart_data->id}}" class="btn btn-warning btn-sm"> + </button>
-
-                                        
+                                        <button id="klik-{{$cart_data->id}}" class="btn btn-warning btn-sm"> + </button>                                       
                                     </div>
                                 </td>
+
                                 <td class="cart_total">
-                                    <p style="font-size: 30px">$ {{$image_data->price*$cart_data->qty}}</p>
+                                    <p style="font-size: 20px">Rp {{number_format($image_data->price*$cart_data->qty)}}</p>
                                 </td>
                                 <td class="cart_delete">
                                     <a class="cart_quantity_delete" href="javascript:" rel="{{$cart_data->id}}"  id="hapus-{{$cart_data->id}}"><i class="fa fa-times"></i></a>
@@ -164,9 +162,9 @@
                     <div class="total_area" >
                         <ul>
                             @if(Session::has('discount_amount_price'))
-                                <li>Sub Total <span>$ {{$total_price}}</span></li>
-                                <li>Coupon Discount (Code : {{Session::get('coupon_code')}}) <span>$ {{Session::get('discount_amount_price')}}</span></li>
-                                <li>Total <span>$ {{$total_price-Session::get('discount_amount_price')}}</span></li>
+                                <li>Sub Total <span>Rp {{number_format($total_price)}}</span></li>
+                                <li>Coupon Discount (Code : {{Session::get('coupon_code')}}) <span>Rp {{number_format(Session::get('discount_amount_price'))}}</span></li>
+                                <li>Total <span>Rp {{number_format($total_price-Session::get('discount_amount_price'))}}</span></li>
                             @else
                                 <li >Total <span>Rp {{number_format($total_price)}}</span></li>
                             @endif
@@ -180,8 +178,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
-        
-         
         $(".cart_quantity_delete").click(function () {
             var id=$(this).attr('rel');
             var deleteFunction=$(this).attr('rel1');

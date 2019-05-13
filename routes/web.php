@@ -19,10 +19,7 @@ Route::get('/list-products','IndexController@shop');
 Route::get('/cat/{id}','IndexController@listByCat')->name('cats');
 Route::get('/product-detail/{id}','IndexController@detialpro');
 
-Route::post('/addToCart','CartController@addToCart')->name('addToCart');
-Route::get('/viewcart','CartController@index');
-Route::get('/cart/deleteItem/{id}','CartController@deleteItem');
-Route::post('/cart/update/{cart}','CartController@update')->name('cart.update');
+
 
 Auth::routes(['verify' => true]);
 
@@ -43,12 +40,17 @@ Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
 });
 
 Route::group(['guard'=>'web'],function (){
+    
+    Route::post('/addToCart','CartController@addToCart')->name('addToCart');
+    Route::get('/viewcart','CartController@index');
+    Route::get('/cart/deleteItem/{id}','CartController@deleteItem');
+    Route::post('/cart/update/{cart}','CartController@update')->name('cart.update');
     Route::get('/check-out','CheckOutController@index');
     Route::get('/check-shipping','CheckOutController@checkshipping');
     Route::post('/submit-checkout','CheckOutController@submitcheckout');
-    Route::get('/order-review','OrdersController@index');
-    Route::post('/submit-order','OrdersController@order');
-    Route::get('/cod','OrdersController@cod');
+    Route::get('/order-review','OrderController@index');
+    Route::post('/submit-order','OrderController@order');
+    Route::get('/cod','OrderController@cod');
     Route::get('/paypal','OrdersController@paypal');
 });
 
