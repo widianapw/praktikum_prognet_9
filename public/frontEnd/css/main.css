@@ -1026,7 +1026,7 @@ h2.title {
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  background-color: #FE980F;
+  background-color: #e22739;
   border:0px;
   color: #FFFFFF;
   cursor: default;
@@ -1216,7 +1216,7 @@ h2.title {
 }
 
 .product-information {
-  border: 1px solid #F7F7F0;
+  border: 2px solid #e22739;
   overflow: hidden;
   padding-bottom: 60px;
   padding-left: 60px;
@@ -1250,7 +1250,7 @@ h2.title {
 }
 
 .product-information span span {
-  color: #FE980F;
+  color: #e22739;
   float: left;
   font-family: 'Roboto', sans-serif;
   font-size: 30px;
@@ -1283,7 +1283,7 @@ h2.title {
 
 
 .cart {
-  background: #FE980F;
+  background: #e22739;
   border: 0 none;
   border-radius: 0;
   color: #FFFFFF;
@@ -1561,13 +1561,13 @@ h2.title {
 }
 
 #cart_items .cart_info {
-  border: 1px solid #E6E4DF;
+  border: 1px solid #e22739;
   margin-bottom: 50px
 }
 
 
 #cart_items .cart_info .cart_menu {
-  background: #FE980F;
+  background: #e22739;
   color: #fff;
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
@@ -1580,7 +1580,7 @@ h2.title {
 
 
 #cart_items .cart_info .table.table-condensed tr {
-  border-bottom: 1px solid#F7F7F0
+  border-bottom: 1px solid#fff
 }
 
 #cart_items .cart_info .table.table-condensed tr:last-child {
@@ -1622,7 +1622,7 @@ h2.title {
 
 
 #cart_items .cart_info .cart_total_price {
-  color: #FE980F;
+  color: #e22739;
   font-size: 24px;
 }
 
@@ -1662,14 +1662,14 @@ h2.title {
 
 
 .cart_delete a {
-  background:#F0F0E9;
+  background:#e22739;
   color: #FFFFFF;
   padding: 5px 7px;
   font-size: 16px
 }
 
 .cart_delete a:hover {
-  background:#FE980F
+  background:#f70219
 }
 
 
@@ -1697,7 +1697,7 @@ h2.title {
 }
 
 #do_action .total_area, #do_action .chose_area {
-  border: 1px solid #E6E4DF;
+  border: 3px solid #e22739;
   color: #696763;
   padding: 30px 25px 30px 0;
   margin-bottom: 80px;
@@ -1708,8 +1708,8 @@ h2.title {
 }
 
 .total_area ul li {
-  background:#E6E4DF;
-  color: #696763;
+  background:#e22739;
+  color: #fff;
   margin-top: 10px;
   padding: 7px 20px;
 }
@@ -1774,7 +1774,7 @@ h2.title {
 }
 
 .update, .check_out {
-  background: #FE980F;
+  background: #e22739;
   border-radius: 0;
   color: #FFFFFF;
   margin-top: 18px;
@@ -1800,8 +1800,8 @@ h2.title {
 }
 
 .register-req, .step-one .heading {
-  background: none repeat scroll 0 0 #F0F0E9;
-  color: #363432;
+  background: none repeat scroll 0 0 #e22739;
+  color: #fff;
   font-size: 20px;
   margin-bottom: 35px;
   padding: 10px 25px;
@@ -1971,7 +1971,7 @@ h2.title {
 
 #cart_items .cart_info 
 .table.table-condensed.total-result span {
-  color: #FE980F;
+  color: #e22739;
   font-weight: 700;
   font-size: 16px
 }

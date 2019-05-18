@@ -31,8 +31,8 @@
 
                         <div class="form-group">
                             <label for="name">Kota</label>
-                            <select name="kota" id="billing_city" class="form-control">
-                                <option>pilih kota tujuan</option>
+                            <select name="kota" id="billing_city" class="select2-container">
+                                <option>Pilih Kota Tujuan</option>
                                 @for($i = 0; $i < count($countries); $i++ )
                                     <option value="{{$countries[$i]["postal_code"]}}">{{$countries[$i]["city_name"].', '.$countries[$i]["province"]}}</option>
 
@@ -57,8 +57,8 @@
 
                          <div class="form-group">
                             <label for="name">Kurir</label>
-                            <select name="kurir" id="kurir" class="form-control">
-                                <option>pilih kurir</option>
+                            <select name="kurir" id="kurir" class="select2-container">
+                                <option>Pilih Kurir</option>
                                 @foreach($courier as $courier)
                                     <option value="{{$courier->courier}}">{{$courier->courier}}</option>
                                 @endforeach
@@ -117,8 +117,8 @@
 
                         <div class="form-group">
                             <label for="name">Service</label>
-                            <select name="service" class="form-control" id="service">
-                                <option>pilih service</option>
+                            <select name="service" class="select2-container" id="service">
+                                <option>Pilih Service</option>
                                 @for($i = 0; $i < count($service); $i++ )
                                     <option value="{{$service[$i]["cost"]["0"]["value"]}}">{{$service[$i]["service"].', estimasi('.$service[$i]["cost"]["0"]["etd"].' hari)'}}</option>
                                 @endfor

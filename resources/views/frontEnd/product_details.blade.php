@@ -62,6 +62,7 @@
                             <span id="dynamic_price">Rp {{number_format($detail_product->price)}}</span>
                             <label>Quantity:</label>
                             <input type="text" name="quantity" id="inputStock"/>
+                        </br>
                             @if($detail_product->stock >0)
                             <button type="submit" class="btn btn-fefault cart" id="buttonAddToCart">
                                 <i class="fa fa-shopping-cart"></i>

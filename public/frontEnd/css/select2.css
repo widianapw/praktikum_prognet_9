@@ -20,6 +20,8 @@ Version: 3.5.3 Timestamp: Wed Aug 19 21:55:46 EDT 2015
   -webkit-box-sizing: border-box; /* webkit */
      -moz-box-sizing: border-box; /* firefox */
           box-sizing: border-box; /* css3 */
+          width: 100%;
+          margin: auto;
 }
 
 .select2-container .select2-choice {
