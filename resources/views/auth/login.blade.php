@@ -21,7 +21,7 @@
                             <input type="checkbox" class="checkbox">
                             Keep me signed in
                         </span>
-                        <button type="submit" class="btn btn-default">Login</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </form>
                 </div><!--/login form-->
             </div>
@@ -50,7 +50,7 @@
                         <input type="password" placeholder="Confirm Password" name="password_confirmation" value="{{old('password_confirmation')}}"/>
                         <span class="text-danger">{{$errors->first('password_confirmation')}}</span>
 
-                        <button type="submit" class="btn btn-default">Signup</button>
+                        <button type="submit" class="btn btn-primary">Signup</button>
                     </form>
                 </div><!--/sign up form-->
             </div>

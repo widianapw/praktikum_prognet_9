@@ -20,7 +20,7 @@
                                         <a href="{{url('/product-detail',$product->id)}}"><img src="{{asset('images/small/'.$product['image_name']) }}" alt="img" /></a>
                                         <h2>Rp {{number_format($product->price)}}</h2>
                                         <p>{{$product->product_name}}</p>
-                                        <a href="{{url('/product-detail',$product->id)}}" class="btn btn-warning add-to-cart">View Product</a>
+                                        <a href="{{url('/product-detail',$product->id)}}" class="btn btn-default add-to-cart">View Product</a>
                                     </div>
                                 </div>
                                 {{-- <div class="choose">

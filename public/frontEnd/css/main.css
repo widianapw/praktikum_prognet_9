@@ -11,6 +11,7 @@ body {
   background:;
   position: relative;
   font-weight:500px;
+  color: #fff;
 }
 
 ul li {
@@ -52,7 +53,7 @@ a#scrollUp {
   bottom: 0px;
   right: 10px;
   padding: 5px 10px;
-  background: #FE980F;
+  background: #e22739;
   color: #FFF;
   -webkit-animation: bounce 2s ease infinite;
   animation: bounce 2s ease infinite;
@@ -249,7 +250,7 @@ a#scrollUp i{
 
 .mainmenu ul li a:hover, .mainmenu ul li a.active,  .shop-menu ul li a.active{
 	background:none;
-	color:#fdb45e;
+	color:#e22739;
 }
 
 .search_box input {
@@ -660,7 +661,7 @@ ul.sub-menu {
   padding-top: 15px;
 }
 .left-sidebar h2, .brands_products h2 {
-  color: #FE980F;
+  color: #e22739;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -835,7 +836,7 @@ h2.title:before{
 
 
 h2.title {
-  color: #FE980F;
+  color: #e22739;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -862,7 +863,7 @@ h2.title {
 }
 
 .productinfo h2{
-	color: #FE980F;
+	color: #e22739;
 	font-family: 'Roboto', sans-serif;
 	font-size: 24px;
 	font-weight: 700;
@@ -1505,7 +1506,7 @@ h2.title {
 
 
 .or{
-	background: #FE980F;
+	background: #e22739;
 	border-radius: 40px;
 	color: #FFFFFF;
 	font-family: 'Roboto', sans-serif;
@@ -1885,7 +1886,7 @@ h2.title {
 
 
 .shopper-info .btn-primary {
-  background: #FE980F;
+  background: #2f14c7;
   border: 0 none;
   border-radius: 0;
   margin-right: 15px;
@@ -2392,7 +2393,7 @@ h2.title {
 }
 
 .btn.btn-primary {
-  background:#FE980F;
+  background:#e22739;
   border: 0 none;
   border-radius: 0;
   margin-top: 16px;
