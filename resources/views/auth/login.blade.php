@@ -19,7 +19,7 @@
                         <input type="password" placeholder="Password" name="password"/>
                         <span>
                             <input type="checkbox" class="checkbox">
-                            Keep me signed in
+                           <p style="color: black;"> Keep me signed in </p>
                         </span>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </form>

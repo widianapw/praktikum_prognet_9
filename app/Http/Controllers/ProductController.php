@@ -136,7 +136,6 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        
         $test = Product::find($product)->first();
         $cat = Product_cat_det::select('category_id')->where('product_id',$product->id)->get();
         $diskon = Discount::where('id_product',$product->id)->where('start','<=',CARBON::NOW())->where('end','>=',CARBON::NOW())->get()->first();

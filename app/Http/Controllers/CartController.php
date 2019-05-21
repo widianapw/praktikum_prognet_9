@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Cart;
 use App\Product;
+use App\Discount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -19,14 +21,25 @@ class CartController extends Controller
     
     public function index(){
         
-        $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price')
+        $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price','percentage')
             ->join('products','carts.product_id','=','products.id')
+            ->leftjoin('discounts','products.id','=','discounts.id_product')
             ->where('user_id',Auth::id())
             ->where('status','notyet')
             ->groupBy('carts.id')
             ->get();
         $total_price=0;
+        // return($cart_datas);
         foreach ($cart_datas as $cart_data){
+
+            $diskon = Discount::where('id_product',$cart_data->product_id)->where('start','<=',CARBON::NOW())->where('end','>=',CARBON::NOW())->get()->first();
+            if (!empty($diskon)) {
+                $cart_data->price = ((100-$diskon->percentage)*$cart_data->price/100);
+                $cart_data->percentage = $diskon->percentage;
+            }
+            else{
+                $cart_data->percentage = "-";
+            }
             $total_price+=$cart_data->price*$cart_data->qty;
         }
         
@@ -85,6 +98,7 @@ class CartController extends Controller
         $output = '<div class="alert alert-success"> Data Updated </div>';
 
         echo json_encode($output);
+        return redirect()->back();
 
     //     $cart_data = Cart::where('id',$id)->get()->first();
     //     // return($cart_data->qty);

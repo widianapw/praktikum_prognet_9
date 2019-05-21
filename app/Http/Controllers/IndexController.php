@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Product;
 use App\Product_cat;
@@ -11,6 +12,7 @@ use Illuminate\Support\Carbon;
 class IndexController extends Controller
 {
     public function index(){
+        
         $products=Product::select('products.id', 'product_name','price','image_name','product_category_details.category_id')
         	->join('product_images','products.id','=','product_images.product_id')
         	->join('product_category_details','products.id','=','product_category_details.product_id')
@@ -26,6 +28,7 @@ class IndexController extends Controller
             ->where('category_id',$id)
         	->groupBy('products.id')
         	->get();
+        return($list_product);
         $byCate=Product_cat::select('category_name')->where('id',$id)->first();
         return view('frontEnd.products',compact('list_product','byCate'));
     }

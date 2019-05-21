@@ -1,12 +1,12 @@
 <div class="left-sidebar">
     <?php
-        $categories=DB::table('product_categories')->where('parent_id','=',0)->get();
+        $categories=DB::table('product_categories')->where('parent_id','=',0)->where('deleted_at',NULL)->get();
     ?>
     <h2>Category</h2>
     <div class="panel-group category-products" id="accordian"><!--category-productsr-->
         @foreach($categories as $category)
             <?php
-                $sub_categories=DB::table('product_categories')->select('id','category_name')->where([['parent_id',$category->id]])->get();
+                $sub_categories=DB::table('product_categories')->select('id','category_name')->where([['parent_id',$category->id]])->where('deleted_at',NULL)->get();
             ?>
             <div class="panel panel-default">
                 <div class="panel-heading">

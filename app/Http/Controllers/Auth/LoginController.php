@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Http\Request;
 class LoginController extends Controller
 {
     /*
@@ -38,4 +39,29 @@ class LoginController extends Controller
     {
         $this->middleware('guest:web')->except('logout');
     }
+
+    public function login(Request $request)
+    {
+        // $this->validate($request,[
+        //     'username' => 'required|string',
+        //     'password' => 'required|min:8',
+        // ]);
+
+        $credential =[
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+
+        if(Auth::guard('web')->attempt($credential,$request->member)){
+            return redirect()->intended(route("home"));
+        }
+        return redirect()->back()->withInput($request->only('email','remember'));
+        
+    }
+
+    public function logout(){
+        Auth::guard('web')->logout();
+        return redirect('/');
+    }
+
 }

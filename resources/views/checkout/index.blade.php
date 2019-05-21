@@ -4,7 +4,11 @@
 @endsection
 @section('content')
 
-    
+    <style type="text/css">
+        label{
+            color: black;
+        }
+    </style>
     <div class="container">
         @if(Session::has('message'))
             <div class="alert alert-success text-center" role="alert">
@@ -24,13 +28,13 @@
 
                         {{-- <input type="hidden" name="pengiriman" value="{{$countries}}" > --}}
                         <div class="form-group {{$errors->has('billing_name')?'has-error':''}}">
-                            <label for="name">Nama</label>
+                            <label for="name">Name</label>
                             <input type="text" class="form-control" name="nama" id="name" value="{{$user_login->name}}">
                             <span class="text-danger">{{$errors->first('nama')}}</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Kota</label>
+                            <label for="name">City</label>
                             <select name="kota" id="billing_city" class="select2-container">
                                 <option>Pilih Kota Tujuan</option>
                                 @for($i = 0; $i < count($countries); $i++ )
@@ -51,12 +55,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Kode POS</label>
+                            <label for="name">Postal Code</label>
                             <input type="text" id="postal" name="postal" disabled="" class="form-control" >
                         </div>
 
                          <div class="form-group">
-                            <label for="name">Kurir</label>
+                            <label for="name">Courier</label>
                             <select name="kurir" id="kurir" class="select2-container">
                                 <option>Pilih Kurir</option>
                                 @foreach($courier as $courier)
@@ -66,19 +70,19 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Alamat Lengkap</label>
-                            <input type="text" class="form-control" value="{{$user_login->address}}" name="alamat" id="billing_address" placeholder="Billing Address">
+                            <label for="name">Address</label>
+                            <input type="text" class="form-control" value="{{$user_login->address}}" name="alamat" id="billing_address" placeholder="Address">
                             <span class="text-danger">{{$errors->first('billing_address')}}</span>
                         </div>
                         
                         <div class="form-group {{$errors->has('billing_mobile')?'has-error':''}}">
-                            <label for="name">Nomor Telpon</label>
-                            <input type="text" class="form-control" name="telpon" id="billing_mobile" placeholder="Billing Mobile">
+                            <label for="name">Phone</label>
+                            <input type="text" class="form-control" name="telpon" id="billing_mobile" placeholder="phone">
                             <span class="text-danger">{{$errors->first('billing_mobile')}}</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Total Harga Cart</label>
+                            <label>Total Cart</label>
                             <input type="text" class="form-control" name="total_price" disabled="" value="Rp {{number_format($total_price)}}">
 
                         </div>
@@ -106,6 +110,7 @@
 
                         <input type="hidden" id="total_price" name="total_price" value="{{$total_price}}">
                         <input type="hidden" name="provinsi" value="{{$provinsi}}">
+                        <input type="hidden" name="kurir" value="{{$kurir}}">
                         <input type="hidden" value="{{$kota}}" name="kota">
                         <input type="hidden" name="alamat" value="{{$alamat}}">
                         <input type="hidden" name="nama" value="{{$nama}}">

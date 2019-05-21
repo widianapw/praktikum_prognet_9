@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use App\Discount;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,12 +56,21 @@ class CheckOutController extends Controller
 
       // return($countries);
 
-      $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price')
+      $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price','percentage')
             ->join('products','carts.product_id','=','products.id')
-            ->where('user_id',Auth::id())->get();
-        $total_price=0;
-        foreach ($cart_datas as $cart_data){
-            $total_price+=$cart_data->price*$cart_data->qty;
+            ->leftjoin('discounts','products.id','=','discounts.id_product')
+            ->where('user_id',Auth::id())
+            ->where('status','notyet')
+            ->groupBy('carts.id')
+            ->get();
+      $total_price=0;
+        // return($cart_datas);
+      foreach ($cart_datas as $cart_data){
+          $diskon = Discount::where('id_product',$cart_data->product_id)->where('start','<=',CARBON::NOW())->where('end','>=',CARBON::NOW())->get()->first();
+          if (!empty($diskon)) {
+              $cart_data->price = ((100-$diskon->percentage)*$cart_data->price/100);      
+          }
+          $total_price+=$cart_data->price*$cart_data->qty;
         }
 
       return view('checkout.index',compact('countries','user_login','courier','total_price'));
@@ -119,12 +130,21 @@ class CheckOutController extends Controller
 
         
 
-        $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price')
+        $cart_datas=Cart::select('carts.id','user_id','product_id','stock','qty','status','price','percentage')
             ->join('products','carts.product_id','=','products.id')
-            ->where('user_id',Auth::id())->get();
-        $total_price=0;
-        foreach ($cart_datas as $cart_data){
-            $total_price+=$cart_data->price*$cart_data->qty;
+            ->leftjoin('discounts','products.id','=','discounts.id_product')
+            ->where('user_id',Auth::id())
+            ->where('status','notyet')
+            ->groupBy('carts.id')
+            ->get();
+      $total_price=0;
+        // return($cart_datas);
+      foreach ($cart_datas as $cart_data){
+          $diskon = Discount::where('id_product',$cart_data->product_id)->where('start','<=',CARBON::NOW())->where('end','>=',CARBON::NOW())->get()->first();
+          if (!empty($diskon)) {
+              $cart_data->price = ((100-$diskon->percentage)*$cart_data->price/100);      
+          }
+          $total_price+=$cart_data->price*$cart_data->qty;
         }
         // return($total_price);
 

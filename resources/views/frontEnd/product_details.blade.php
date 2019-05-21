@@ -90,14 +90,19 @@
         <div class="category-tab shop-details-tab"><!--category-tab-->
             <div class="col-sm-12">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+                    <li class="active"><a href="#reviews" data-toggle="tab">Reviews</a></li>
                     {{-- <li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
                     <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li> --}}
                 </ul>
             </div>
             <div class="tab-content">
-                <div class="tab-pane fade active in" id="details" >
-                    {{$detail_product->description}}
+                <div class="tab-pane fade active in" id="reviews" >
+                    <form>
+                        <input type="text" placeholder="reviews" class="form-control" name=""><br>
+                        <input type="number" name="" placeholder="rating 1-5">
+                        <input type="submit" name="" style="float: right;">
+                    </form>
+                    
                 </div>
 
                 <div class="tab-pane fade" id="companyprofile" >

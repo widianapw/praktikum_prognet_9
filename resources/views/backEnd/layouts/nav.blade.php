@@ -20,6 +20,7 @@
                 <li><a href="{{url('/admin/courier/create')}}">Add New Courier</a></li>
             </ul>
         </li>
+        <li> <a href="/admin/transactionAdmin"><i class="icon icon-money"></i> <span>Transaction</span></a> </li>
     </ul>
 </div>
 <!--sidebar-menu-->

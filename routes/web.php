@@ -37,10 +37,12 @@ Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
     Route::resource('/courier','CourierController');
     Route::resource('/product_img','ProductImgController');
     Route::get('product_img/{product_img}','ProductImgController@destroy');
+    Route::get('admin/logout','AuthAdmin\LoginController@logout')->name('admin.logout');
+    Route::resource('/transactionAdmin','transactionAdminController');
 });
 
 Route::group(['guard'=>'web'],function (){
-    
+    Route::resource('/transaction','TransactionController');
     Route::post('/addToCart','CartController@addToCart')->name('addToCart');
     Route::get('/viewcart','CartController@index');
     Route::get('/cart/deleteItem/{id}','CartController@deleteItem');
@@ -49,9 +51,9 @@ Route::group(['guard'=>'web'],function (){
     Route::get('/check-shipping','CheckOutController@checkshipping');
     Route::post('/submit-checkout','CheckOutController@submitcheckout');
     Route::get('/order-review','OrderController@index');
-    Route::post('/submit-order','OrderController@order');
-    Route::get('/cod','OrderController@cod');
-    Route::get('/paypal','OrdersController@paypal');
+    Route::get('/user/logout','Auth\LoginController@logout')->name('user.logout');
+    Route::post('/cod','OrderController@cod');
+    
 });
 
 

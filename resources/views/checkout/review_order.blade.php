@@ -3,18 +3,20 @@
 @section('slider')
 @endsection
 @section('content')
+    <style type="text/css">
+        #shipping{
+            color: black;
+        }
+    </style>
     <div class="container">
         <div class="step-one">
             <h2 class="heading">Shipping To</h2>
         </div>
         <div class="row">
-            <form action="{{url('/submit-order')}}" method="post" class="form-horizontal">
+            <form action="{{url('/cod')}}" method="post" class="form-horizontal">
                 @csrf
-                
-                
-                
                 <div class="col-sm-12">
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="shipping">
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -54,10 +56,11 @@
                                     <td class="description"></td>
                                     <td class="price">Price</td>
                                     <td class="quantity">Quantity</td>
+                                    <td>Discount</td>
                                     <td class="total">Total</td>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="color: black;">
                                 @foreach($cart_datas as $cart_data)
                                    <?php
                                     $image_products=DB::table('products')->select('image_name')->join('product_images','product_images.product_id','=','products.id')->where('products.id',$cart_data->product_id)->get()->first();
@@ -71,10 +74,13 @@
                                         <h4><a href="">{{$image_data->product_name}}</a></h4>
                                     </td>
                                     <td class="cart_price">
-                                        <p>${{$cart_data->price}}</p>
+                                        <p>${{$image_data->price}}</p>
                                     </td>
                                     <td class="cart_quantity">
                                         <p>{{$cart_data->qty}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{$cart_data->percentage}}%</p>
                                     </td>
                                     <td class="cart_total">
                                         <p class="cart_total_price">$ {{$cart_data->price*$cart_data->qty}}</p>

@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                        <a href="{{url('/')}}"><img src="{{asset('frontEnd/images/home/eshop1.png')}}" alt="" width="300"; /></a>
+                        <a href="{{url('/')}}"><img src="{{asset('frontEnd/images/home/eshop1.png')}}" alt="" width="120"; /></a>
                     </div>
                     <div class="btn-group pull-right">
 {{--                         <div class="btn-group">
@@ -62,10 +62,10 @@
                             @if(Auth::check())
                                 <li><a href="{{url('/myaccount')}}"><i class="fa fa-user"></i> My Account</a></li>
                                 {{-- <li><a href="{{ route('logout') }}"><i class="fa fa-lock"></i> Logout </a></li> --}}
-                                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                                <li><a href="{{ route('user.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
                                     <i class="fa fa-lock"></i>Logout
                                 </a></li>    
-                                <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="frm-logout" action="{{ route('user.logout') }}"{{--  method="POST" --}} style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             @else
@@ -93,13 +93,14 @@
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a href="{{url('/')}}" class="active">Home</a></li>
-                            <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                            <li class="dropdown"><a href="">Shop<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     <li><a href="{{url('/list-products')}}">Products</a></li>
                                     {{-- <li><a href="{{url('/myaccount')}}">Account</a></li> --}}
                                     <li><a href="{{url('/viewcart')}}">Cart</a></li>
                                 </ul>
                             </li>
+                            <li><a href="/transaction">Transactions</a></li>
                             {{-- <li><a href="https://www.youtube.com/channel/UCH2Ir7rPaRN8ZPL9mSpclhw" target="_blank">Contact</a></li> --}}
                         </ul>
                     </div>

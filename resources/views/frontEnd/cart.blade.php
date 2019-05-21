@@ -3,6 +3,7 @@
 @section('slider')
 @endsection
 @section('content')
+
     <section id="cart_items">
         <div class="container">
             @if(Session::has('message'))
@@ -18,11 +19,13 @@
                         <td class="description">Name</td>
                         <td class="price">Price</td>
                         <td class="quantity">Quantity</td>
+                        <td class="discount">Discount</td>
                         <td class="total">Total</td>
                         <td></td>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="color: black;">
+
                         @foreach($cart_datas as $cart_data)
                         <?php
                                 $image_products=DB::table('products')->select('image_name')->join('product_images','product_images.product_id','=','products.id')->where('products.id',$cart_data->product_id)->get()->first();
@@ -38,27 +41,32 @@
                                     {{-- @endforeach --}}
                                 </td>
                                 <td class="cart_description">
-                                    <p style="font-size: 20px">{{$image_data->product_name}}</p>
+                                    <p style="font-size: 15px">{{$image_data->product_name}}</p>
                                 </td>
                                 <td class="cart_price">
-                                    <p style="font-size: 20px">Rp {{number_format($image_data->price)}}</p>
+                                    <p style="font-size: 15px">Rp {{number_format($image_data->price)}}</p>
                                 </td>
 
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
                                         <button id="klik1-{{$cart_data->id}}" class="btn btn-warning btn-sm"> - </button>
                                         <input class="cart_quantity_input-{{$cart_data->id}}" style="text-align: center; background-color: white;" type="text" name="quantity" value="{{$cart_data->qty}}" autocomplete="off" disabled="" size="3">
-                                        <button id="klik-{{$cart_data->id}}" class="btn btn-warning btn-sm"> + </button>                                       
+                                        <button id="klik-{{$cart_data->id}}" class="btn btn-warning btn-sm"> + </button>
+
                                     </div>
+                                </td>
+                                <td>
+                                    {{$cart_data->percentage}}%
                                 </td>
 
                                 <td class="cart_total">
-                                    <p style="font-size: 20px">Rp {{number_format($image_data->price*$cart_data->qty)}}</p>
+                                    <p style="font-size: 15px">Rp {{number_format($cart_data->price*$cart_data->qty)}}</p>
                                 </td>
                                 <td class="cart_delete">
                                     <a class="cart_quantity_delete" href="javascript:" rel="{{$cart_data->id}}"  id="hapus-{{$cart_data->id}}"><i class="fa fa-times"></i></a>
                                 </td>
                             </tr>
+
                             <script type="text/javascript">
 
                                 $(document).ready(function(){
@@ -76,22 +84,24 @@
                                         var stock = parseInt($('#stock-{{$cart_data->id}}').val());
                                         var qty_akhir = parseInt(qty_awal) + 1;
                                         var id = parseInt($('#id-{{$cart_data->id}}').val());
+
                                         // axios.patch()
                                         $.ajax({
                                               url: baseUrl+'/cart/update/'+id,  
-                                              
                                               type : 'post',
-                                              
                                               dataType: 'JSON',
                                               data: {
-                                                // "_method": "put",
-                                                "id": id,
-                                                "qty" : qty_akhir,
+                                                "_token": "{{ csrf_token() }}",
+                                                id: id,
+                                                qty : qty_akhir,
                                                 },
                                               success:function(response){
                                                     alert("TEST");
                                                     $('.cart_quantity_input-{{$cart_data->id}}').val(qty_akhir);
                                                     event.preventDefault();
+                                              },
+                                              error:function(){
+                                                alert(qty_akhir);
                                               }
 
                                           });
@@ -169,6 +179,7 @@
                                 <li >Total <span>Rp {{number_format($total_price)}}</span></li>
                             @endif
                         </ul>
+                        
                         <div style="margin-left: 20px;"><a class="btn btn-default check_out" href="{{url('/check-out')}}">Check Out</a></div>
                     </div>
                 </div>
