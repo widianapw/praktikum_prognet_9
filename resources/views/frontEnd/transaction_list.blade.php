@@ -45,9 +45,12 @@ s
                                     <p>{{$transaction->timeout}}</p>
                                 </td>
 
-                                
                                 <td>
-                                    <a href="/transaction/{{$transaction->id}}"><button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Payment & Detail</button></a>
+                                    @if($transaction->status == 'expired')
+                                        Your Transaction Expired
+                                    @else
+                                        <a href="/transaction/{{$transaction->id}}"><button class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Payment & Detail</button></a>
+                                    @endif
                                 </td>
 
                                 <td class="cart_total">
@@ -57,6 +60,10 @@ s
                                         <p>insert Your Payment proof</p>
                                     @endif
                                 </td>
+                                
+                                
+
+                                
 
                                 
                                

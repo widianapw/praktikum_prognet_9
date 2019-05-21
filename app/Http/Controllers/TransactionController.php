@@ -103,7 +103,13 @@ class TransactionController extends Controller
                
             
         }
-        $transaction->status='unverified';
+        $status = $transaction->status;
+        if ($status == 'delivered') {
+            $transaction->status='success';
+        }
+        else{
+            $transaction->status='unverified';   
+        }
         $transaction->save();
 
         return redirect('/transaction');

@@ -33,7 +33,7 @@
                         ?>
                         
                             <input type="hidden" name="id" value="{{$cart_data->id}}" id="id-{{$cart_data->id}}">
-                            <input type="hidden" name="stock" id="stock" value="{{$cart_data->stock}}">
+                            <input type="hidden" name="stock" id="stock-{{$cart_data->id}}" value="{{$cart_data->stock}}">
                             <tr id="tr-{{$cart_data->id}}">
                                 <td class="cart_product">
                                     {{-- @foreach($image_products as $image_product) --}}
@@ -49,9 +49,9 @@
 
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
-                                        <button id="klik1-{{$cart_data->id}}" class="btn btn-warning btn-sm"> - </button>
+                                        <button id="klik1-{{$cart_data->id}}" class="btn btn-danger btn-sm"> - </button>
                                         <input class="cart_quantity_input-{{$cart_data->id}}" style="text-align: center; background-color: white;" type="text" name="quantity" value="{{$cart_data->qty}}" autocomplete="off" disabled="" size="3">
-                                        <button id="klik-{{$cart_data->id}}" class="btn btn-warning btn-sm"> + </button>
+                                        <button id="klik-{{$cart_data->id}}" class="btn btn-danger btn-sm"> + </button>
 
                                     </div>
                                 </td>
@@ -77,7 +77,6 @@
                                     });
 
                                     $('#klik-{{$cart_data->id}}').click(function(){
-
                                         console.log("terklik");
                                         var baseUrl = window.location.protocol+"//"+window.location.host;
                                         var qty_awal = $('.cart_quantity_input-{{$cart_data->id}}').val();
@@ -85,6 +84,10 @@
                                         var qty_akhir = parseInt(qty_awal) + 1;
                                         var id = parseInt($('#id-{{$cart_data->id}}').val());
 
+                                        if (qty_akhir > stock) {
+                                            alert("Stock tidak mencukupi!");
+                                            return false;
+                                        }
                                         // axios.patch()
                                         $.ajax({
                                               url: baseUrl+'/cart/update/'+id,  
@@ -93,10 +96,10 @@
                                               data: {
                                                 "_token": "{{ csrf_token() }}",
                                                 id: id,
-                                                qty : qty_akhir,
+                                                qty:qty_akhir
                                                 },
                                               success:function(response){
-                                                    alert("TEST");
+                                                    
                                                     $('.cart_quantity_input-{{$cart_data->id}}').val(qty_akhir);
                                                     event.preventDefault();
                                               },
@@ -107,21 +110,39 @@
                                           });
                                     });
 
-                                    // $('#klik1-{{$cart_data->product_id}}').click(function(){
-                                    //     var qty_awal = $('.cart_quantity_input-{{$cart_data->product_id}}').val();
+                                    $('#klik1-{{$cart_data->id}}').click(function(){
+                                        console.log("terklik");
+                                        var baseUrl = window.location.protocol+"//"+window.location.host;
+                                        var qty_awal = $('.cart_quantity_input-{{$cart_data->id}}').val();
+                                        var stock = parseInt($('#stock-{{$cart_data->id}}').val());
+                                        var qty_akhir = parseInt(qty_awal) - 1;
+                                        if (qty_akhir == 0 ) {
+                                            alert('Quantity tidak boleh 0 !');
+                                            return false;
+                                        }
+                                        var id = parseInt($('#id-{{$cart_data->id}}').val());
 
-                                    //     var qty_akhir = parseInt(qty_awal) - 1;
-                                    //     if (qty_akhir == 0) {
-                                    //         var qty_akhir = 1;
-                                    //     }
-                                    //     $('.cart_quantity_input-{{$cart_data->product_id}}').val(qty_akhir);
-                                    //         event.preventDefault();
-                                    // });
+                                        // axios.patch()
+                                        $.ajax({
+                                              url: baseUrl+'/cart/update/'+id,  
+                                              type : 'post',
+                                              dataType: 'JSON',
+                                              data: {
+                                                "_token": "{{ csrf_token() }}",
+                                                id: id,
+                                                qty:qty_akhir
+                                                },
+                                              success:function(response){
+                                                    
+                                                    $('.cart_quantity_input-{{$cart_data->id}}').val(qty_akhir);
+                                                    event.preventDefault();
+                                              },
+                                              error:function(){
+                                                alert(qty_akhir);
+                                              }
 
-                                    // $('#hapus-{{$cart_data->product_id}}').click(function(){
-                                    //     console.log("terklik");
-                                    //     $('#tr-{{$cart_data->product_id}}').remove();
-                                    // });
+                                          });
+                                    });
 
                                 });
                             </script>

@@ -68,7 +68,7 @@ class OrderController extends Controller
         $total = $datatransaksi[1]+$datatransaksi[8];
 
         $transaction = new Transaction;
-        $transaction->timeout= Carbon::now()->add(3,'day');
+        $transaction->timeout= Carbon::now()->add(1,'day');
         $transaction->address = $address;
         $transaction->regency = $regency;
         $transaction->province = $province;

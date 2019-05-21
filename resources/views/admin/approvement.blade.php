@@ -37,7 +37,11 @@
                         <td>{{$index->courier}}</td>
                         <td>{{$index->timeout}}</td>
                         <td>
-                            <center><a href="/admin/transactionAdmin/{{$index->id}}"><button class="btn-success">Detail & Verify</button></a></center>
+                            @if($index->status == 'expired')
+                                <center><a href="/admin/transactionAdmin/{{$index->id}}"><button class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Detail</button></a></center>
+                            @else
+                                <center><a href="/admin/transactionAdmin/{{$index->id}}"><button class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Detail & Verify</button></a></center>
+                            @endif
                         </td>
                         <td>{{$index->status}}</td>
                         

@@ -18,7 +18,7 @@ class TransactionAdminController extends Controller
     }
     public function index()
     {
-        $transaction = Transaction::select('transactions.id','name','address','total','courier','timeout','transactions.status')->join('users','users.id','=','transactions.user_id')->join('couriers','transactions.courier_id','=','couriers.id')->get();
+        $transaction = Transaction::select('transactions.id','name','address','total','courier','timeout','transactions.status')->join('users','users.id','=','transactions.user_id')->join('couriers','transactions.courier_id','=','couriers.id')->orderBy('transactions.created_at','desc')->get();
         return view('/admin/approvement',compact("transaction"));
     }
 
@@ -83,7 +83,14 @@ class TransactionAdminController extends Controller
     public function update(Request $request, $id)
     {
         $transaction = Transaction::where('id',$id)->get()->first();
-        $transaction->status = 'verified';
+        if ($transaction->status == 'unverified') {
+            
+            $transaction->status = 'verified';
+        }
+        else{
+
+            $transaction->status = 'delivered';   
+        }
         $transaction->save();
         return redirect('/admin/transactionAdmin');
     }

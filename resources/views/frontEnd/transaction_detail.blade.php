@@ -26,6 +26,10 @@
                     </div>
                 @elseif($data[0]->status == 'unverified')
                     <p style="color: black;">Your Payment Proof is still Processing</p>
+                @elseif($data[0]->status == 'delivered')
+                    <div style="text-align: left;">
+                        <button type="submit" name="submit" class="btn btn-danger">Set Status Success</button>
+                    </div>
                 @else
                     <p style="color: black;">Your Payment has Success</p>
                 @endif
