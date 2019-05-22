@@ -5,8 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\AdminNotification;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable 
 {
     use Notifiable;
     protected $guard = 'admin';
@@ -28,6 +29,10 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function notifications(){
+        return $this->morphMany(AdminNotification::class, 'notifiable')->orderBy('created_at', 'desc');
+    }
 
     /**
      * The attributes that should be cast to native types.

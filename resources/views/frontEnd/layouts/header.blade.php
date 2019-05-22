@@ -60,6 +60,16 @@
                         <ul class="nav navbar-nav">
                             <li><a href="{{url('/viewcart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                             @if(Auth::check())
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bell"></i> Notification
+                                <span class="badge" style="background-color: red;">1</span><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                  <li><a href="#">Page 1-1</a></li><br>
+                                  <li><a href="#">Page 1-2</a></li>
+                                </ul>
+                            </li>
+
+                                
                                 <li><a href="{{url('/myaccount')}}"><i class="fa fa-user"></i> My Account</a></li>
                                 {{-- <li><a href="{{ route('logout') }}"><i class="fa fa-lock"></i> Logout </a></li> --}}
                                 <li><a href="{{ route('user.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">

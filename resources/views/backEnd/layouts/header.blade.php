@@ -4,7 +4,13 @@
 </div>
 <!--close-Header-part-->
 <!--top-Header-menu-->
+@php
+    $jum = DB::table('admin_notifications')->get()->count();
+
+@endphp
+
 <div id="user-nav" class="navbar navbar-inverse">
+
     <ul class="nav">
         {{-- <li class=""><a title="" href="{{url('/admin/settings')}}"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li> --}}
         <li class="">
@@ -19,6 +25,16 @@
             </form>
 
         </li>
+
+        <li class="">
+            <a class="dropdown-item" href="#">
+                <i class="icon icon-bell"></i>{{ __(' Notification') }}
+                @if($jum!=0)
+                    <span class="badge badge-pill badge-warning">{{$jum}}</span>
+                @endif
+            </a>
+        </li>
+        
     </ul>
 </div>
 <!--close-top-Header-menu-->

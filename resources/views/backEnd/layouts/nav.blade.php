@@ -21,6 +21,7 @@
             </ul>
         </li>
         <li> <a href="/admin/transactionAdmin"><i class="icon icon-money"></i> <span>Transaction</span></a> </li>
+        <li> <a href="/admin/response"><i class="icon icon-envelope"></i> <span>Response</span></a> </li>
     </ul>
 </div>
 <!--sidebar-menu-->

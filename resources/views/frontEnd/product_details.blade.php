@@ -29,13 +29,13 @@
                 </div>
 
                 <ul class="thumbnails" style="margin-left: -10px;">
-                    <li>
+                    <li><table>
                         @foreach($imagesGalleries as $imagesGallery)
-                            <a href="{{url('images/large',$imagesGallery->image_name)}}" data-standard="{{url('images/small',$imagesGallery->image_name)}}">
+                            <td><a href="{{url('images/large',$imagesGallery->image_name)}}" data-standard="{{url('images/small',$imagesGallery->image_name)}}">
                                 <img src="{{url('images/small',$imagesGallery->image_name)}}" alt="" width="75" style="padding: 8px;">
-                            </a>
+                            </a></td>
                         @endforeach
-                    </li>
+                    </li></table>
                 </ul>
             </div>
             <div class="col-sm-7">

@@ -18,6 +18,7 @@ class IndexController extends Controller
         	->join('product_images','products.id','=','product_images.product_id')
         	->join('product_category_details','products.id','=','product_category_details.product_id')
         	->groupBy('products.id')
+            ->orderBy('products.created_at','desc')
         	->get();
         return view('frontEnd.index',compact('products'));
     } 
@@ -28,6 +29,7 @@ class IndexController extends Controller
         	->join('product_category_details','products.id','=','product_category_details.product_id')
             ->where('category_id',$id)
         	->groupBy('products.id')
+            ->orderBy('products.created_at','desc')
         	->get();
         return($list_product);
         $byCate=Product_cat::select('category_name')->where('id',$id)->first();
@@ -39,6 +41,7 @@ class IndexController extends Controller
             ->join('product_images','products.id','=','product_images.product_id')
             ->join('product_category_details','products.id','=','product_category_details.product_id')
             ->groupBy('products.id')
+            ->orderBy('products.created_at','desc')
             ->get();
         $byCate="";
         return view('frontEnd.products',compact('products','byCate'));

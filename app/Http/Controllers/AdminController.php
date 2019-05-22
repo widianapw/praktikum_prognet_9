@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use DB;
+use App\Admin;
+use App\Notifications\AdminNotification;
 use App\Quotation;
 use App\Transaction;
 use Illuminate\Http\Request;
@@ -26,6 +28,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+
         $tahun = CARBON::NOW()->format('Y');
         $reportBulanan = Transaction::
         select(DB::raw('MONTHNAME(created_at) as bulan'), DB::raw('COALESCE(SUM(total),0) as pendapatan'))

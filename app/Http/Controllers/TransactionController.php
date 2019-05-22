@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Admin;
+use App\Notifications\AdminNotification;
 use App\Transaction;
 use App\Transaction_det;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class TransactionController extends Controller
     public function __construct()
     {
         $this->middleware('auth:web');
+
     }
     public function index()
     {
         $transaction = Transaction::select('transactions.id','address','total','courier','timeout','status')->join('couriers','transactions.courier_id','=','couriers.id')->where('user_id',Auth::id())->orderBy('transactions.created_at','desc')->get();
-
         return view('/frontEnd/transaction_list',compact("transaction"));
     }
 
@@ -97,7 +98,6 @@ class TransactionController extends Controller
                 $large_image_path=public_path('images/large/'.$name);
                 $medium_image_path=public_path('images/medium/'.$name);
                 $small_image_path=public_path('images/small/'.$name);
-                        //// Resize Images
                 Image::make($image)->save($large_image_path);
                 Image::make($image)->resize(600,600)->save($medium_image_path);
                 Image::make($image)->resize(300,300)->save($small_image_path);
@@ -115,6 +115,8 @@ class TransactionController extends Controller
         else{
             $transaction->status='unverified';   
             $transaction->save();
+            $admin= Admin::find(1);
+            $admin->notify(new AdminNotification("Terdapat Transaksi baru. Cek"));
         }
         
 

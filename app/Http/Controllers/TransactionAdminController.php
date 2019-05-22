@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Transaction;
 use App\Transaction_det;
+use App\Notifications\UserNotification;
+use App\User;
+
 class TransactionAdminController extends Controller
 {
     /**
@@ -86,12 +89,16 @@ class TransactionAdminController extends Controller
         if ($transaction->status == 'unverified') {
             
             $transaction->status = 'verified';
+            $transaction->save();
         }
         else{
 
-            $transaction->status = 'delivered';   
+            $transaction->status = 'delivered';
+            $transaction->save();
+            $user= User::find(1);
+            $user->notify(new UserNotification("Transaksi sudah dikirim"));   
         }
-        $transaction->save();
+        
         return redirect('/admin/transactionAdmin');
     }
 
