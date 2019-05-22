@@ -49,6 +49,7 @@
                     <div class="product-information"><!--/product-information-->
                         <img src="{{asset('frontEnd/images/product-details/new.jpg')}}" class="newarrival" alt="" />
                         <h2>{{$detail_product->product_name}}</h2>
+                            
                         {{-- <p>Code ID: {{$detail_product->p_code}}</p> --}}
                         {{-- <span>
                             <select name="size" id="idSize" class="form-control">
@@ -58,11 +59,13 @@
                             @endforeach
                         </select>
                         </span><br> --}}
+                        
                         <span>
                             <span id="dynamic_price">Rp {{number_format($detail_product->price)}}</span>
                             <label>Quantity:</label>
                             <input type="text" name="quantity" id="inputStock"/>
                         </br>
+
                             @if($detail_product->stock >0)
                             <button type="submit" class="btn btn-fefault cart" id="buttonAddToCart">
                                 <i class="fa fa-shopping-cart"></i>
@@ -70,6 +73,7 @@
                             </button>
                             @endif
                         </span>
+                        
                         <p><b>Availability:</b>
                             @if($detail_product->stock >0)
                                 <span id="availableStock">In Stock</span>
@@ -80,6 +84,20 @@
                         <p><b>Condition:</b> New</p>
 
                         <p><b>Discount:</b>@if(empty($dis)) None @else {{$dis->percentage}}% untill {{date('d M Y', strtotime($dis->end))}} @endif</p>
+                        <p>
+                            @php
+                                $a = 5;
+                            @endphp
+                            @for($i=0 ; $i< $detail_product->product_rate; $i++)
+                                @php
+                                    $a = $a-1;
+                                @endphp
+                                <span style="color: gold;" class="fa fa-star checked"></span>
+                            @endfor
+                            @for($i=0 ; $i< $a; $i++)
+                                <span style="color: grey;" class="fa fa-star"></span>
+                            @endfor
+                        </p>
                         {{-- <a href=""><img src="{{asset('frontEnd/images/product-details/share.png')}}" class="share img-responsive"  alt="" /></a> --}}
                     </div><!--/product-information-->
                 </form>
@@ -95,14 +113,32 @@
                     <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li> --}}
                 </ul>
             </div>
-            <div class="tab-content">
-                <div class="tab-pane fade active in" id="reviews" >
-                    <form>
-                        <input type="text" placeholder="reviews" class="form-control" name=""><br>
-                        <input type="number" name="" placeholder="rating 1-5">
-                        <input type="submit" name="" style="float: right;">
-                    </form>
-                    
+            <div class="tab-content" id="reviews">
+                <div class="tab-pane fade active in"  >
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-9">
+                        @foreach($review as $review)
+                            <p><b>{{$review->name}}</b></p>
+                            @php
+                                $a = 5;
+                            @endphp
+                            @for($i=0 ; $i< $review->rate; $i++)
+                                @php
+                                    $a = $a-1;
+                                @endphp
+                                <span style="color: gold;" class="fa fa-star checked"></span>
+                            @endfor
+                            @for($i=0 ; $i< $a; $i++)
+                                <span style="color: grey;" class="fa fa-star"></span>
+                            @endfor
+                            <input style="background-color: white;" type="text" readonly="" class="form-control" value="{{$review->content}}">
+                            <hr>
+
+                        @endforeach
+                        </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane fade" id="companyprofile" >

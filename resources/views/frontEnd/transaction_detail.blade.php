@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <style type="text/css">
-        legend{
+        legend,label,p{
             color: black;
         }
     </style>
@@ -15,7 +15,7 @@
                 @csrf
                 @method("PUT")
                 <legend>Proof of Payment</legend>    
-
+                <input type="hidden" name="id" id="id" value="{{$data[0]->transaction_id}}">
                 @if(empty($data[0]->status))
                     <div class="form-group">
                         <input type="file" name="proof_of_payment" id="proof_of_payment" class="form-control">>
@@ -27,8 +27,16 @@
                 @elseif($data[0]->status == 'unverified')
                     <p style="color: black;">Your Payment Proof is still Processing</p>
                 @elseif($data[0]->status == 'delivered')
+                    {{-- </form> --}}
+
                     <div style="text-align: left;">
-                        <button type="submit" name="submit" class="btn btn-danger">Set Status Success</button>
+                        <button type="submit" name="submit" {{-- onclick="myFunction()" --}} id="success" class="btn btn-danger">Set Status Success</button>
+                    </div>
+                @elseif($data[0]->status == 'success')
+                    </form>
+                    <p style="color: black;">Your Payment has Success</p>
+                     <div style="text-align: left;">
+                        <button type="submit" name="submit" onclick="myFunction()" id="ulasan" class="btn btn-danger">Review Item</button>
                     </div>
                 @else
                     <p style="color: black;">Your Payment has Success</p>
@@ -37,6 +45,46 @@
             </div>
         </div>
     </div>
+    
+    <div class="container" id="review" style="display: none;">
+    <hr>
+    <br><br>
+        <div class="row">
+            <div class="col-sm-4">
+            <form action="/review" method="post" enctype="multipart/form-data">
+                @csrf
+                
+                <legend>Review Item</legend>    
+
+                @foreach($data as $d)
+                <?php
+                    $image_products=DB::table('products')->select('image_name')->join('product_images','product_images.product_id','=','products.id')->where('products.id',$d->product_id)->get()->first();
+                ?>
+                    <input type="hidden" name="product_id[]" value="{{$d->product_id}}">
+                    <table>
+                    <td><a href=""><img src="{{url('images/small',$image_products->image_name)}}" alt="" style="width: 100px;"></a></td>
+                    <td>    </td>
+                    <td><p style="font-size: 30px; float: right;">{{$d->product_name}}</p></td>
+                    </table>
+                    <br>
+                    <div class="form-group">
+                        <label>Rating (1-5)</label>
+                        <input autofocus="" type="text" name="rating[]"  class="form-control">>
+                    </div>
+                    <div class="form-group">
+                        <label>Review</label>
+                        <input type="text" name="review[]" class="form-control">>
+                    </div>
+                    
+                    <hr>
+                @endforeach
+                    <input type="submit" value="submit review" class="btn btn-danger">
+            </form>
+            </div>
+        </div>
+        <hr>
+    </div>
+    
     <br><br><br>
     <div class="container">
     <div class="row">
@@ -160,6 +208,54 @@
             </div>
         </div>
     </section><!--/#do_action-->
+    <script type="text/javascript">
+        //  $(document).ready(function(){
+        //     $.ajaxSetup({
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     });
 
+        //     $('#success').click(function(){
+        //         console.log("terklik");
+        //         var baseUrl = window.location.protocol+"//"+window.location.host;
+        //         var status = "success"
+        //         var id = parseInt($('#id').val());
+        //         console.log(id);
+                
+        //         $.ajax({
+        //               url: baseUrl+'/transactionStatus/'+id,  
+        //               type : 'post',
+        //               dataType: 'JSON',
+        //               data: {
+        //                 "_token": "{{ csrf_token() }}",
+        //                 id: id,
+                        
+        //                 },
+        //               success:function(response){
+                            
+        //                     event.preventDefault();
+        //               },
+        //               error:function(){
+        //                 alert("fail");
+        //               }
+
+        //           });
+        //     });
+        // });
+
+        function myFunction() {
+        
+        var x = document.getElementById("review");
+        
+          if (x.style.display === "none") {
+            x.style.display = "block";
+
+          } 
+          else {
+            x.style.display = "none";
+          }
+        }
+    </script>
     
 @endsection

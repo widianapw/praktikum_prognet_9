@@ -27,6 +27,7 @@
                     <tbody style="color: black;">
 
                         @foreach($cart_datas as $cart_data)
+                        <input type="hidden" name="tprc" id="ctot" value="{{$total_price}}">
                         <?php
                                 $image_products=DB::table('products')->select('image_name')->join('product_images','product_images.product_id','=','products.id')->where('products.id',$cart_data->product_id)->get()->first();
                                 $image_data = DB::table('products')->where('products.id',$cart_data->product_id)->get()->first();
@@ -34,6 +35,8 @@
                         
                             <input type="hidden" name="id" value="{{$cart_data->id}}" id="id-{{$cart_data->id}}">
                             <input type="hidden" name="stock" id="stock-{{$cart_data->id}}" value="{{$cart_data->stock}}">
+                            <input type="hidden" name="prc" id="price-{{$cart_data->id}}" value="{{$cart_data->price}}">
+                            
                             <tr id="tr-{{$cart_data->id}}">
                                 <td class="cart_product">
                                     {{-- @foreach($image_products as $image_product) --}}
@@ -60,7 +63,7 @@
                                 </td>
 
                                 <td class="cart_total">
-                                    <p style="font-size: 15px">Rp {{number_format($cart_data->price*$cart_data->qty)}}</p>
+                                    <p id="ptotal-{{$cart_data->id}}" style="font-size: 15px">Rp {{number_format($cart_data->price * $cart_data->qty)}}</p>
                                 </td>
                                 <td class="cart_delete">
                                     <a class="cart_quantity_delete" href="javascript:" rel="{{$cart_data->id}}"  id="hapus-{{$cart_data->id}}"><i class="fa fa-times"></i></a>
@@ -68,7 +71,9 @@
                             </tr>
 
                             <script type="text/javascript">
-
+                                function formatNumber(num) {
+                                  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                                }
                                 $(document).ready(function(){
                                     $.ajaxSetup({
                                         headers: {
@@ -81,9 +86,20 @@
                                         var baseUrl = window.location.protocol+"//"+window.location.host;
                                         var qty_awal = $('.cart_quantity_input-{{$cart_data->id}}').val();
                                         var stock = parseInt($('#stock-{{$cart_data->id}}').val());
-                                        var qty_akhir = parseInt(qty_awal) + 1;
-                                        var id = parseInt($('#id-{{$cart_data->id}}').val());
+                                        
 
+                                        
+
+                                        var qty_akhir = parseInt(qty_awal) + 1;
+
+                                        var id = parseInt($('#id-{{$cart_data->id}}').val());
+                                        var harga = parseInt($('#price-{{$cart_data->id}}').val());
+                                        var ctot = parseInt($('#ctot').val());
+                                        var ss = ctot+harga;
+                                        console.log(ss);
+                                        var total = harga * qty_akhir;
+
+                                        console.log(total);
                                         if (qty_akhir > stock) {
                                             alert("Stock tidak mencukupi!");
                                             return false;
@@ -96,11 +112,14 @@
                                               data: {
                                                 "_token": "{{ csrf_token() }}",
                                                 id: id,
-                                                qty:qty_akhir
+                                                qty: qty_akhir,
                                                 },
                                               success:function(response){
                                                     
                                                     $('.cart_quantity_input-{{$cart_data->id}}').val(qty_akhir);
+                                                    $('#ctot').val(ss);
+                                                    $('#tot').text("Rp "+formatNumber(ss));
+                                                    $('#ptotal-{{$cart_data->id}}').text("Rp "+formatNumber(total));
                                                     event.preventDefault();
                                               },
                                               error:function(){
@@ -116,11 +135,18 @@
                                         var qty_awal = $('.cart_quantity_input-{{$cart_data->id}}').val();
                                         var stock = parseInt($('#stock-{{$cart_data->id}}').val());
                                         var qty_akhir = parseInt(qty_awal) - 1;
+
+
                                         if (qty_akhir == 0 ) {
                                             alert('Quantity tidak boleh 0 !');
                                             return false;
                                         }
+                                        var harga = parseInt($('#price-{{$cart_data->id}}').val());
+                                        var total = harga * qty_akhir;
                                         var id = parseInt($('#id-{{$cart_data->id}}').val());
+                                        var ctot = parseInt($('#ctot').val());
+                                        var ss = ctot-harga;
+                                        
 
                                         // axios.patch()
                                         $.ajax({
@@ -133,7 +159,9 @@
                                                 qty:qty_akhir
                                                 },
                                               success:function(response){
-                                                    
+                                                    $('#ctot').val(ss);
+                                                    $('#tot').text("Rp "+formatNumber(ss));
+                                                    $('#ptotal-{{$cart_data->id}}').text("Rp "+ formatNumber(total));
                                                     $('.cart_quantity_input-{{$cart_data->id}}').val(qty_akhir);
                                                     event.preventDefault();
                                               },
@@ -197,7 +225,7 @@
                                 <li>Coupon Discount (Code : {{Session::get('coupon_code')}}) <span>Rp {{number_format(Session::get('discount_amount_price'))}}</span></li>
                                 <li>Total <span>Rp {{number_format($total_price-Session::get('discount_amount_price'))}}</span></li>
                             @else
-                                <li >Total <span>Rp {{number_format($total_price)}}</span></li>
+                                <li >Total <span id="tot">Rp {{number_format($total_price)}}</span></li>
                             @endif
                         </ul>
                         

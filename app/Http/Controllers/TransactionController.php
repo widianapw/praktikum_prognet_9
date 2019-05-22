@@ -23,6 +23,7 @@ class TransactionController extends Controller
     public function index()
     {
         $transaction = Transaction::select('transactions.id','address','total','courier','timeout','status')->join('couriers','transactions.courier_id','=','couriers.id')->where('user_id',Auth::id())->orderBy('transactions.created_at','desc')->get();
+
         return view('/frontEnd/transaction_list',compact("transaction"));
     }
 
@@ -55,6 +56,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
+
         $total_price = 0;
         // return($transaction);
         $data = Transaction_det::join('transactions','transaction_details.transaction_id','=','transactions.id')->join('products','transaction_details.product_id','=','products.id')->where('transaction_id',$transaction->id)->get();
@@ -62,6 +64,7 @@ class TransactionController extends Controller
         foreach ($data as $key) {
             $total_price+=$key->selling_price*$key->qty;
         }
+
         return view('/frontEnd/transaction_detail',compact("data","total_price"));
         
     }
@@ -106,14 +109,26 @@ class TransactionController extends Controller
         $status = $transaction->status;
         if ($status == 'delivered') {
             $transaction->status='success';
+            $transaction->save();
+            return redirect()->back();
         }
         else{
             $transaction->status='unverified';   
+            $transaction->save();
         }
-        $transaction->save();
+        
 
         return redirect('/transaction');
     }
+
+    public function updateStatus(Request $request, Transaction $transaction)
+    {
+    
+            $transaction->status='success';
+            $transaction->save();
+            return response()->json($transaction);
+        
+    }    
 
     /**
      * Remove the specified resource from storage.

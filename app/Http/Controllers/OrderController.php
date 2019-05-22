@@ -109,8 +109,8 @@ class OrderController extends Controller
             $cart_data->status = "checkedout";
             $cart_data->save();
         }
-
-        return view('payment.cod',compact('user_order'));
+        $transaction = Transaction::select('transactions.id','address','total','courier','timeout','status')->join('couriers','transactions.courier_id','=','couriers.id')->where('user_id',Auth::id())->orderBy('transactions.created_at','desc')->get();
+        return view('/frontEnd/transaction_list',compact("transaction"));
     }
     public function paypal(Request $request){
         $who_buying=Orders_model::where('users_id',Auth::id())->first();
