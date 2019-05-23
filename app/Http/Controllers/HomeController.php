@@ -27,6 +27,7 @@ class HomeController extends Controller
             ->join('product_images','products.id','=','product_images.product_id')
             ->join('product_category_details','products.id','=','product_category_details.product_id')
             ->groupBy('products.id')
+            ->orderBy('products.created_at','desc')
             ->get();
         return view('frontEnd.index',compact("products"));
     }

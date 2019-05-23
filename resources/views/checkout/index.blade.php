@@ -154,6 +154,9 @@
     </div>
     <div style="margin-bottom: 20px;"></div>
     <script type="text/javascript">
+        function formatNumber(num) {
+          return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
          $(document).ready(function(){
 
             $('#billing_city').click(function(){                            
@@ -169,8 +172,8 @@
 
                  var totall = parseInt(total) + parseInt(ongkir);
                  console.log(ongkir)
-                 $('#ongkir').val(ongkir);
-                 $('#total').val(totall);
+                 $('#ongkir').val("Rp "+formatNumber(ongkir));
+                 $('#total').val("Rp "+formatNumber(totall));
                  event.preventDefault();
             });
 

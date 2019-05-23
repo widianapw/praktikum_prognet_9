@@ -1,7 +1,7 @@
 @extends('backEnd.layouts.master')
 @section('title','Add Products Page')
 @section('content')
-    <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}">Products</a> <a href="{{route('product.create')}}" class="current">Add New Product</a> </div>
+    
     <div class="container-fluid">
         @if(Session::has('message'))
             <div class="alert alert-success text-center" role="alert">
@@ -91,12 +91,12 @@
     </div>
 @endsection
 @section('jsblock')
-    <script src="{{asset('js/jquery.min.js')}}"></script>
+     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
     <script src="{{asset('js/jquery.toggle.buttons.js')}}"></script>
-    <script src="{{asset('js/masked.js')}}"></script>
+    <script src="{{asset('js/masked.js')}}"></script>s
     <script src="{{asset('js/jquery.uniform.js')}}"></script>
     <script src="{{asset('js/select2.min.js')}}"></script>
     <script src="{{asset('js/matrix.js')}}"></script>
@@ -104,7 +104,8 @@
     <script src="{{asset('js/wysihtml5-0.3.0.js')}}"></script>
     <script src="{{asset('js/jquery.peity.min.js')}}"></script>
     <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
-        $('.textarea_editor').wysihtml5();
+         $('.textarea_editor').wysihtml5();
     </script>
 @endsection

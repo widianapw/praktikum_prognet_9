@@ -19,17 +19,13 @@ Route::get('/list-products','IndexController@shop');
 Route::get('/cat/{id}','IndexController@listByCat')->name('cats');
 Route::get('/product-detail/{id}','IndexController@detialpro');
 
-Route::get('/markRead','TransactionController@markRead');
+Route::post('/markRead','TransactionController@markRead');
 
 
 Auth::routes(['verify' => true]);
 
 //mengubah route home dan home controller agar ke /
-Route::get('/', function(){
-    $user = user::find(1);
-    User::find(1)->notify(new UserNotification);
-    // 'IndexController@index');
-});
+
 
 Route::get('/','IndexController@index');
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
@@ -47,6 +43,8 @@ Route::group(['prefix'=>'admin', 'guard'=>'admin'],function(){
     Route::get('admin/logout','AuthAdmin\LoginController@logout')->name('admin.logout');
     Route::resource('/transactionAdmin','transactionAdminController');
     Route::resource('/response','ResponseController');
+    Route::post('/markReadAdmin','TransactionAdminController@markReadAdmin');
+    Route::get('/createResponse/{response}','ResponseController@createResponse');
     
 });
 

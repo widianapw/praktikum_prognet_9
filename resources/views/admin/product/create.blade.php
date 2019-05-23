@@ -2,8 +2,7 @@
 @section('title','Add Products Page')
 @section('content')
 
-    <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}">Products</a> <a href="{{route('product.create')}}" class="current">Add New Product</a> </div>
-    <div class="container-fluid">
+    <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}" class="current">Products</a></div>
         @if(Session::has('message'))
             <div class="alert alert-success text-center" role="alert">
                 <strong>Well done! &nbsp;</strong>{{Session::get('message')}}
@@ -25,7 +24,7 @@
                     <div class="control-group">
                         <label for="p_name" class="control-label">Harga</label>
                         <div class="controls">
-                            <div class="input-prepend"> <span class="add-on">$</span>
+                            <div class="input-prepend">
                             <input type="number" name="harga" class="form-control" value="" title="" required="required" style="width: 400px;">
                             </div>                            
                         </div>
@@ -87,10 +86,8 @@
                     <div class="control-group" >
                         <label for="Foto" class="control-label">Foto</label>
                             <div class="controls">
-                                {{-- <div class="gallery"></div> --}}
-                                <input type="file" name="filename[]" class="form-control" multiple="multiple" id="gallery-photo-add">
+                                <input type="file" name="filename[]" multiple="multiple" id="gallery-photo-add">
                             </div>
-                        
                     </div>
   
                     <div class="control-group">
@@ -147,7 +144,7 @@
 @endsection
 @section('jsblock')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    {{-- <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
@@ -158,9 +155,9 @@
     <script src="{{asset('js/matrix.js')}}"></script>
     <script src="{{asset('js/matrix.form_common.js')}}"></script>
     <script src="{{asset('js/wysihtml5-0.3.0.js')}}"></script>
-    <script src="{{asset('js/jquery.peity.min.js')}}"></script> --}}
-  {{--   <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
+    <script src="{{asset('js/jquery.peity.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
     <script>
         $('.textarea_editor').wysihtml5();
-    </script> --}}
+    </script>
 @endsection

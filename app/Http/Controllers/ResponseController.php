@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Response;
 use App\Review;
+use App\Admin;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ResponseController extends Controller
@@ -15,11 +17,10 @@ class ResponseController extends Controller
      */
     public function index()
     {
-        $review = Review::orderBy('created_at','desc')
+        $response = Review::select('product_reviews.id','product_id','user_id','rate','content','status')->join('products','product_reviews.product_id','=','products.id')->orderBy('product_reviews.created_at','desc')
             ->get();
-            
 
-        return $review;
+        return view('admin/response',compact("response"));
     }
 
     /**
@@ -27,9 +28,16 @@ class ResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function createResponse($request)
+    {
+        $review = Review::where('id',$request)->get()->first();
+        
+        return view('/admin/create_response',compact('review'));
+    }
+
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -40,7 +48,22 @@ class ResponseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = new Response;
+        $response->review_id = $request->review_id;
+        $response->admin_id = Auth::guard('admin')->user()->id;
+        $response->content = $request->response;
+        $response->save();
+
+        $review = Review::where('id',$request->review_id)->first();
+        $review->status = "replied";
+        $review->save();
+
+
+        $response = Review::select('product_reviews.id','product_id','user_id','rate','content','status')->join('products','product_reviews.product_id','=','products.id')->orderBy('product_reviews.created_at','desc')
+            ->get();
+
+        return view('admin/response',compact("response"));
+
     }
 
     /**
@@ -51,7 +74,8 @@ class ResponseController extends Controller
      */
     public function show(Response $response)
     {
-        //
+        
+        
     }
 
     /**

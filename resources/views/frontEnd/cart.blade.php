@@ -65,8 +65,9 @@
                                 <td class="cart_total">
                                     <p id="ptotal-{{$cart_data->id}}" style="font-size: 15px">Rp {{number_format($cart_data->price * $cart_data->qty)}}</p>
                                 </td>
+
                                 <td class="cart_delete">
-                                    <a class="cart_quantity_delete" href="javascript:" rel="{{$cart_data->id}}"  id="hapus-{{$cart_data->id}}"><i class="fa fa-times"></i></a>
+                                    <a class="cart_quantity_delete"  href="javascript:" rel="{{$cart_data->id}}"  id="hapus-{{$cart_data->id}}"><i class="fa fa-times"></i></a>
                                 </td>
                             </tr>
 

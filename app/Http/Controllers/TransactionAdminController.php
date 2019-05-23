@@ -7,7 +7,7 @@ use App\Transaction;
 use App\Transaction_det;
 use App\Notifications\UserNotification;
 use App\User;
-
+use App\Admin;
 class TransactionAdminController extends Controller
 {
     /**
@@ -23,6 +23,13 @@ class TransactionAdminController extends Controller
     {
         $transaction = Transaction::select('transactions.id','name','address','total','courier','timeout','transactions.status')->join('users','users.id','=','transactions.user_id')->join('couriers','transactions.courier_id','=','couriers.id')->orderBy('transactions.created_at','desc')->get();
         return view('/admin/approvement',compact("transaction"));
+    }
+
+    public function markReadAdmin(){
+        $admin = Admin::find(1);
+        
+        $admin->unreadNotifications()->update(['read_at' => now()]);
+        return response()->json($admin);
     }
 
     /**
@@ -95,7 +102,7 @@ class TransactionAdminController extends Controller
             $transaction->save();
             $tuser= Transaction::where('id',$id)->first();
             $user = User::find($tuser->user_id);
-            $user->notify(new UserNotification("Transaksi anda sudah verified"));
+            $user->notify(new UserNotification("<a href = '/transaction/$id'>Transaksi anda sudah Verified</a>"));
         }
         else{
 
@@ -104,7 +111,7 @@ class TransactionAdminController extends Controller
 
             $tuser= Transaction::where('id',$id)->first();
             $user = User::find($tuser->user_id);
-            $user->notify(new UserNotification("Transaksi anda sudah delivered"));   
+            $user->notify(new UserNotification("<a href = '/transaction/$id'>Transaksi anda sudah Delivered</a>"));   
         }
         
         return redirect('/admin/transactionAdmin');

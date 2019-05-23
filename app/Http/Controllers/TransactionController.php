@@ -33,7 +33,7 @@ class TransactionController extends Controller
     public function markRead(){
         $user = User::find(Auth::id());
         $user->unreadNotifications()->update(['read_at' => now()]);
-        return redirect()->back();
+        return response()->json($user);
     }
 
     /**
@@ -110,23 +110,21 @@ class TransactionController extends Controller
                 Image::make($image)->resize(600,600)->save($medium_image_path);
                 Image::make($image)->resize(300,300)->save($small_image_path);
                 // $image->move(public_path().'/images/', $name);  
-                $transaction->proof_of_payment=$name;  
-               
-            
+                $transaction->proof_of_payment=$name;    
         }
         $status = $transaction->status;
         if ($status == 'delivered') {
             $transaction->status='success';
             $transaction->save();
             $admin = Admin::first();
-            $admin->notify(new AdminNotification('ada TRANSAKSI Anda yang berubah status menjadi Success '));
+            $admin->notify(new AdminNotification("<a href='/admin/transactionAdmin/$transaction->id'>ada transaksi yang berubah status menjadi Success</a>"));
             return redirect()->back();
         }
         else{
             $transaction->status='unverified';   
             $transaction->save();
             $admin = Admin::first();
-            $admin->notify(new AdminNotification('ada TRANSAKSI Anda yang berubah status menjadi Unverified '));
+            $admin->notify(new AdminNotification("<a href='/admin/transactionAdmin/$transaction->id'>ada transaksi yang berubah status menjadi Unverified</a>"));
         }
         
         return redirect('/transaction');

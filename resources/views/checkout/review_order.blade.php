@@ -74,7 +74,7 @@
                                         <h4><a href="">{{$image_data->product_name}}</a></h4>
                                     </td>
                                     <td class="cart_price">
-                                        <p>${{$image_data->price}}</p>
+                                        <p>Rp {{number_format($image_data->price)}}</p>
                                     </td>
                                     <td class="cart_quantity">
                                         <p>{{$cart_data->qty}}</p>
@@ -83,7 +83,7 @@
                                         <p>{{$cart_data->percentage}}%</p>
                                     </td>
                                     <td class="cart_total">
-                                        <p class="cart_total_price">$ {{$cart_data->price*$cart_data->qty}}</p>
+                                        <p class="cart_total_price">Rp {{number_format($cart_data->price*$cart_data->qty)}}</p>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -93,13 +93,19 @@
                                         <table class="table table-condensed total-result">
                                             <tr>
                                                 <td>Cart Sub Total</td>
-                                                <td>$ {{$data['total_price']}}</td>
+                                                <td>Rp {{number_format($data['total_price'])}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Shipping Cost</td>
+                                                <td>Rp {{number_format($data['service'])}}</td>
                                             </tr>
                                             
                                             <tr>
                                                 <td>Total</td>
-                                                <td><span>$ {{$data['total_price']}}</span></td>
+                                                <td><span>Rp {{number_format($total)}}</span></td>
                                             </tr>
+
                                             
                                         </table>
                                     </td>

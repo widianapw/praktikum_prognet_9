@@ -116,7 +116,7 @@
     
 @endsection
 @section('jsblock')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.uniform.js')}}"></script>
