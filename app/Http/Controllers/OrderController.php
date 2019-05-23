@@ -110,7 +110,7 @@ class OrderController extends Controller
             $cart_data->save();
         }
 
-        $transaction = Transaction::select('transactions.id','address','total','courier','timeout','status')->join('couriers','transactions.courier_id','=','couriers.id')->where('user_id',Auth::id())->orderBy('transactions.created_at','asc')->orderBy('transactions.created_at','desc')->get();
+        $transaction = Transaction::select('transactions.id','address','total','courier','timeout','status')->join('couriers','transactions.courier_id','=','couriers.id')->where('user_id',Auth::id())->orderBy('transactions.created_at','desc')->orderBy('transactions.created_at','desc')->get();
         return view('/frontEnd/transaction_list',compact("transaction"));
     }
     public function paypal(Request $request){

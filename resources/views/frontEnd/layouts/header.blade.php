@@ -59,14 +59,27 @@
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
                             <li><a href="{{url('/viewcart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+
                             @if(Auth::check())
+                            @php
+                                $id = Auth::id();
+                                $jum = auth()->user()->unreadNotifications->count();
+                                $notif = DB::table('admin_notifications')->where('notifiable_id',$id)->get();
+
+                            @endphp
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bell"></i> Notification
-                                <span class="badge" style="background-color: red;">1</span><span class="caret"></span></a>
+                                @if($jum != 0)<span class="badge" style="background-color: red;">1</span>@endif <span class="caret"></span></a>
+
                                 <ul class="dropdown-menu">
-                                  <li><a href="#">Page 1-1</a></li><br>
-                                  <li><a href="#">Page 1-2</a></li>
+                                    <li ><a style="color: green;" href="/markRead">Mark All As Read</a></li><br>
+                                    @foreach(auth()->user()->unreadNotifications as $notif)
+                                        <li><a href="#">{{$notif->data}}</a></li><br>
+                                    @endforeach
+
+                                  
                                 </ul>
+
                             </li>
 
                                 

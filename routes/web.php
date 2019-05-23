@@ -19,6 +19,7 @@ Route::get('/list-products','IndexController@shop');
 Route::get('/cat/{id}','IndexController@listByCat')->name('cats');
 Route::get('/product-detail/{id}','IndexController@detialpro');
 
+Route::get('/markRead','TransactionController@markRead');
 
 
 Auth::routes(['verify' => true]);

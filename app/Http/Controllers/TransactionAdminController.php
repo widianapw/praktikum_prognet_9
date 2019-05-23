@@ -85,18 +85,26 @@ class TransactionAdminController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+
+        
         $transaction = Transaction::where('id',$id)->get()->first();
         if ($transaction->status == 'unverified') {
             
             $transaction->status = 'verified';
             $transaction->save();
+            $tuser= Transaction::where('id',$id)->first();
+            $user = User::find($tuser->user_id);
+            $user->notify(new UserNotification("Transaksi anda sudah verified"));
         }
         else{
 
             $transaction->status = 'delivered';
             $transaction->save();
-            $user= User::find(1);
-            $user->notify(new UserNotification("Transaksi sudah dikirim"));   
+
+            $tuser= Transaction::where('id',$id)->first();
+            $user = User::find($tuser->user_id);
+            $user->notify(new UserNotification("Transaksi anda sudah delivered"));   
         }
         
         return redirect('/admin/transactionAdmin');

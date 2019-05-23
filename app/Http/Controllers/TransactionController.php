@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\User;
 use App\Admin;
 use App\Notifications\AdminNotification;
 use App\Transaction;
 use App\Transaction_det;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image as Image;
@@ -26,6 +28,12 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::select('transactions.id','address','total','courier','timeout','status')->join('couriers','transactions.courier_id','=','couriers.id')->where('user_id',Auth::id())->orderBy('transactions.created_at','desc')->get();
         return view('/frontEnd/transaction_list',compact("transaction"));
+    }
+
+    public function markRead(){
+        $user = User::find(Auth::id());
+        $user->unreadNotifications()->update(['read_at' => now()]);
+        return redirect()->back();
     }
 
     /**
@@ -110,22 +118,22 @@ class TransactionController extends Controller
         if ($status == 'delivered') {
             $transaction->status='success';
             $transaction->save();
+            $admin = Admin::first();
+            $admin->notify(new AdminNotification('ada TRANSAKSI Anda yang berubah status menjadi Success '));
             return redirect()->back();
         }
         else{
             $transaction->status='unverified';   
             $transaction->save();
-            $admin= Admin::find(1);
-            $admin->notify(new AdminNotification("Terdapat Transaksi baru. Cek"));
+            $admin = Admin::first();
+            $admin->notify(new AdminNotification('ada TRANSAKSI Anda yang berubah status menjadi Unverified '));
         }
         
-
         return redirect('/transaction');
     }
 
     public function updateStatus(Request $request, Transaction $transaction)
     {
-    
             $transaction->status='success';
             $transaction->save();
             return response()->json($transaction);

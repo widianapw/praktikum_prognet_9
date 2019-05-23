@@ -5,10 +5,12 @@
 <!--close-Header-part-->
 <!--top-Header-menu-->
 @php
-    $jum = DB::table('admin_notifications')->get()->count();
-
+    $jum = DB::table('admin_notifications')->where('read_at',NULL)->count();
+    $noti = DB::table('admin_notifications')->where('read_at',NULL)->get();
 @endphp
 
+
+</style>
 <div id="user-nav" class="navbar navbar-inverse">
 
     <ul class="nav">
@@ -25,14 +27,20 @@
             </form>
 
         </li>
+        
 
-        <li class="">
-            <a class="dropdown-item" href="#">
-                <i class="icon icon-bell"></i>{{ __(' Notification') }}
-                @if($jum!=0)
-                    <span class="badge badge-pill badge-warning">{{$jum}}</span>
-                @endif
-            </a>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon icon-bell"></i> Notification
+            @if($jum != 0)<span class="badge" style="background-color: red;">1</span>@endif <span class="caret"></span></a>
+
+            <ul class="dropdown-menu">
+                <li ><a href="/markRead">Mark All As Read</a></li>
+                <li id="read" ><a style="color: green;" href="/markRead" >Mark All As Read</a></li>
+                @foreach($noti as $notif)
+                   <li><a href=""> {{$notif->data}}</a></li>
+                @endforeach
+            </ul>
+
         </li>
         
     </ul>
