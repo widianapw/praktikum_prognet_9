@@ -35,7 +35,7 @@ class ResponseController extends Controller
     public function createResponse($request)
     {
         $review = Review::where('id',$request)->get()->first();
-        $product = Product::join('product_images','product_images.product_id','=','products.id')->first();
+        $product = Product::join('product_images','product_images.product_id','=','products.id')->where('products.id',$review->product_id)->first();
 
         return view('/admin/create_response',compact('review','product'));
     }

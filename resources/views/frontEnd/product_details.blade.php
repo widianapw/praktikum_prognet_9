@@ -126,14 +126,14 @@
                         @php
                             $jumreview = $review->count();
                         @endphp
-                        @if($jumreview <= 4)
-                            @for($b=0 ; $b<$jumreview; $b++)
-                                <p><b>{{$review[$i]->name}}</b></p>
+                        
+                            @foreach($review as $review)
+                                <p><b>{{$review->name}}</b></p>
                                 @php
                                     $a = 5;
                                     
                                 @endphp
-                                @for($i=0 ; $i< $review[$b]->rate; $i++)
+                                @for($i=0 ; $i< $review->rate; $i++)
                                     @php
                                         $a = $a-1;
                                     @endphp
@@ -142,12 +142,12 @@
                                 @for($i=0 ; $i< $a; $i++)
                                     <span style="color: grey;" class="fa fa-star"></span>
                                 @endfor
-                                <input style="background-color: white;" type="text" readonly="" class="form-control" value="{{$review[$b]->content}}">
+                                <input style="background-color: white;" type="text" readonly="" class="form-control" value="{{$review->content}}">
 
                                
 
                                 @foreach($response as $respon)
-                                    @if($respon->review_id == $review[$b]->id)
+                                    @if($respon->review_id == $review->id)
                                         <br>
                                         <p  style="float: right; margin-right: 30px"><b>Admin</b></p>
                                         <input style="background-color: white; text-align: right;" type="text" readonly="" class="form-control" value="{{$respon->content}}">
@@ -155,77 +155,15 @@
                                     @endif
                                 @endforeach
                             <hr>
-                            @endfor
+                            @endforeach
 
-                        @else
-                             @for($b=0 ; $b<4; $b++)
-                                <p><b>{{$review[$i]->name}}</b></p>
-                                @php
-                                    $a = 5;
-                                    
-                                @endphp
-                                @for($i=0 ; $i< $review[$b]->rate; $i++)
-                                    @php
-                                        $a = $a-1;
-                                    @endphp
-                                    <span style="color: gold;" class="fa fa-star checked"></span>
-                                @endfor
-                                @for($i=0 ; $i< $a; $i++)
-                                    <span style="color: grey;" class="fa fa-star"></span>
-                                @endfor
-                                <input style="background-color: white;" type="text" readonly="" class="form-control" value="{{$review[$b]->content}}">
+                        
 
-                               
-
-                                @foreach($response as $respon)
-                                    @if($respon->review_id == $review[$b]->id)
-                                        <br>
-                                        <p  style="float: right; margin-right: 30px"><b>Admin</b></p>
-                                        <input style="background-color: white; text-align: right;" type="text" readonly="" class="form-control" value="{{$respon->content}}">
-                                        
-                                    @endif
-                                @endforeach
-                            <hr>
-                            @endfor
-
-                            <center><button  id="tampilkan" class="btn btn-danger" onclick="myFunction()" style="background-color: red;">Show More</button></center>
-                            <div id="tampil" style="display: none;">
-                            @for($b=4 ; $b<$jumreview; $b++)
-                                <p><b>{{$review[$i]->name}}</b></p>
-                                @php
-                                    $a = 5;
-                                    
-                                @endphp
-                                @for($i=0 ; $i< $review[$b]->rate; $i++)
-                                    @php
-                                        $a = $a-1;
-                                    @endphp
-                                    <span style="color: gold;" class="fa fa-star checked"></span>
-                                @endfor
-                                @for($i=0 ; $i< $a; $i++)
-                                    <span style="color: grey;" class="fa fa-star"></span>
-                                @endfor
-                                <input style="background-color: white;" type="text" readonly="" class="form-control" value="{{$review[$b]->content}}">
-
-                               
-
-                                @foreach($response as $respon)
-                                    @if($respon->review_id == $review[$b]->id)
-                                        <br>
-                                        <p  style="float: right; margin-right: 30px"><b>Admin</b></p>
-                                        <input style="background-color: white; text-align: right;" type="text" readonly="" class="form-control" value="{{$respon->content}}">
-                                        
-                                    @endif
-                                @endforeach
-                            <hr>
-                            @endfor
-                            <center><button  id="hilangkan" class="btn btn-danger" style="background-color: red;">Show Less</button></center>
-                            </div>
+                            
 
 
 
 
-                        @endif
                         </div>
                         </div>
                     </div>

@@ -32,7 +32,7 @@ class IndexController extends Controller
         	->groupBy('products.id')
             ->orderBy('products.created_at','desc')
         	->get();
-        return($list_product);
+        
         $byCate=Product_cat::select('category_name')->where('id',$id)->first();
         return view('frontEnd.products',compact('list_product','byCate'));
     }
