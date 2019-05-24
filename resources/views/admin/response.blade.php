@@ -1,5 +1,5 @@
 @extends('backEnd.layouts.master')
-@section('title','Review Products')
+@section('title','Review Response')
 @section('content')
     <div id="breadcrumb"> <a href="{{url('/admin')}}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route('product.index')}}" class="current">Products</a></div>
     <div class="container-fluid">
@@ -20,10 +20,8 @@
                         <th>Produk</th>
                         <th>User</th>
                         <th>Rate</th>
-                        
+                        <th>Date</th>
                         <th>Comment</th>
-
-                        
                         <th>Reply</th>
                         <th>Aksi</th>
                     </tr>
@@ -35,7 +33,7 @@
                             <td style="vertical-align: middle;">{{$response->product_name}}</td>
                             <td style="vertical-align: middle;">{{$response->user_id}}</td>
                             <td style="vertical-align: middle;text-align: center;">{{$response->rate}}</td>
-                            
+                            <td style="vertical-align: middle;text-align: center;">{{$response->created_at}}</td>
                             <td style="vertical-align: middle;">{{$response->content}}</td>
                             
                             <td style="text-align: center;">
@@ -48,13 +46,12 @@
                             <td style="width: 12%; text-align: center;">
                                 {{-- <div class="btn-group"> --}}
                                     
-                                    {{-- <form action="/response/{{$index->id}}/" method="POST">
-                                    @method("DELETE")
-                                    @csrf --}}
-                                    <button type="submit" class="btn btn-danger" >Delete<i class="fa fa-trash-o fa-fw" ></i>
-                                {{-- </button> --}}
-                                </div>
-                            {{-- </form> --}}
+                                    <form action="/review/{{$response->id}}" method="POST">
+                                        @method("DELETE")
+                                        @csrf
+                                    <button type="submit" class="btn btn-danger">Delete<i class="fa fa-trash" ></i></button>
+                                
+                            </form>
                             </td>
                         </tr>
 
@@ -66,36 +63,22 @@
     </div>
 @endsection
 @section('jsblock')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery.ui.custom.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
+    <script src="{{asset('js/jquery.toggle.buttons.js')}}"></script>
+    <script src="{{asset('js/masked.js')}}"></script>
     <script src="{{asset('js/jquery.uniform.js')}}"></script>
     <script src="{{asset('js/select2.min.js')}}"></script>
-    <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/matrix.js')}}"></script>
-    <script src="{{asset('js/matrix.tables.js')}}"></script>
-    <script src="{{asset('js/matrix.popover.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="{{asset('js/matrix.form_common.js')}}"></script>
+    <script src="{{asset('js/wysihtml5-0.3.0.js')}}"></script>
+    <script src="{{asset('js/jquery.peity.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
     <script>
-        $(".btn-outline-danger").click(function () {
-            var id=$(this).attr('rel');
-            var deleteFunction=$(this).attr('rel1');
-            swal({
-                title:'Are you sure?',
-                text:"You won't be able to revert this!",
-                type:'warning',
-                showCancelButton:true,
-                confirmButtonColor:'#3085d6',
-                cancelButtonColor:'#d33',
-                confirmButtonText:'Yes, delete it!',
-                cancelButtonText:'No, cancel!',
-                confirmButtonClass:'btn btn-success',
-                cancelButtonClass:'btn btn-danger',
-                buttonsStyling:false,
-                reverseButtons:true
-            },function () {
-                window.location.href="/admin/"+deleteFunction+"/"+id;
-            });
-        });
+        $('.textarea_editor').wysihtml5();
     </script>
+    
 @endsection

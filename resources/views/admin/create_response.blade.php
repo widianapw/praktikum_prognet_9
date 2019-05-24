@@ -14,6 +14,20 @@
                     @csrf
                     <input type="hidden" name="review_id" value="{{$review->id}}">
                         <div class="control-group">
+                            
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <h3>{{$product->product_name}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="control-group">
+                        <label class="control-label">Product Image :</label>
+                        <div class="controls">
+                        <a href="#"><img src="{{url('images/small',$product->image_name)}}" alt="" onclick="window.open(this.src)" border="3"></a>
+                        </div>
+                    </div>
+                        <div class="control-group">
                             <label class="control-label">User Comment :</label>
                             <div class="controls">
                                 <div class="input-prepend">

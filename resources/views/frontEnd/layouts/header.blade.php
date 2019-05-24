@@ -64,16 +64,18 @@
                             @php
                                 $id = Auth::id();
                                 $jum = auth()->user()->unreadNotifications->count();
-                                $notif = DB::table('admin_notifications')->where('notifiable_id',$id)->get();
+                                // $notif = auth()->user()->unreadNotifications->orderBy();
+                                $notif = DB::table('user_notifications')->where('notifiable_id',$id)->where('read_at',NULL)->orderBy('created_at','desc')->get();
 
                             @endphp
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bell"></i> Notification
-                                @if($jum != 0)<span class="badge" style="background-color: red;">1</span>@endif <span class="caret"></span></a>
+                                @if($jum != 0)<span class="badge" style="background-color: red;">{{$jum}}</span>@endif <span class="caret"></span></a>
 
                                 <ul class="dropdown-menu">
-                                    <li ><button id="readnotif" ><a style="color: green;" >Mark All As Read</a></button></li><br>
-                                    @foreach(auth()->user()->unreadNotifications as $notif)
+                                    
+                                    <center><button id="readnotif" ><a style="color: green;" >---Mark All As Read---</a></button></center>
+                                    @foreach($notif as $notif)
                                         <li><a href="#">{!!$notif->data!!}</a></li><br>
                                     @endforeach
 

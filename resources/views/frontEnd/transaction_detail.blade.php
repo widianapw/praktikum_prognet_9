@@ -69,7 +69,7 @@
                     <br>
                     <div class="form-group">
                         <label>Rating (1-5)</label>
-                        <input autofocus="" type="text" name="rating[]"  class="form-control">>
+                        <input autofocus="" type="number" max="5" min="0" name="rating[]"  class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Review</label>

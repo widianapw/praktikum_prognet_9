@@ -9,6 +9,7 @@ use App\Product_cat;
 use App\Product_img;
 use App\Discount;
 use App\Review;
+use App\Response;
 use Illuminate\Support\Carbon;
 class IndexController extends Controller
 {
@@ -56,11 +57,15 @@ class IndexController extends Controller
         	->get()->first();
         $imagesGalleries=Product_img::where('product_id',$id)->get();
         $dis = Discount::where('id_product',$id)->where('start','<=',CARBON::NOW())->where('end','>=',CARBON::NOW())->get()->first();
-        $review = Review::join('users','product_reviews.user_id','=','users.id')->where('product_id',$id)->orderBy('product_reviews.created_at','desc')->get();
+        $review = Review::select('product_reviews.id','users.name','content','rate')->join('users','product_reviews.user_id','=','users.id')->where('product_id',$id)->orderBy('product_reviews.created_at','asc')->get();
+        $response = Response::get();
+        // return($review);
+        // return($response[0]->review_id);
+
         
         
         // $relateProducts=Products_model::where([['id','!=',$id],['categories_id',$detail_product->categories_id]])->get();
-        return view('frontEnd.product_details',compact('detail_product','imagesGalleries','dis','review'));
+        return view('frontEnd.product_details',compact('detail_product','imagesGalleries','dis','review','response'));
     }
     
 }

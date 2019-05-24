@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Review;
 use App\Product;
 use DB;
+use App\Admin;
+use App\Notifications\AdminNotification;
 use App\Quotation;
 use Illuminate\Http\Request;
 
@@ -57,6 +59,8 @@ class ReviewController extends Controller
             
             $product = Product::where('id',$request->product_id[$i])->get()->first();
             $product->product_rate = (int)$hasil;
+            $admin = Admin::first();
+            $admin->notify(new AdminNotification("<a href='/admin/createResponse/$review->id'>ada Review baru pada product $product->product_name</a>"));
             
             $product->save();
 
@@ -107,6 +111,8 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        $review_id = Review::where('id',$review->id);
+        Review::where('id',$review->id)->delete();
+        return redirect('/admin/response/');
     }
 }
